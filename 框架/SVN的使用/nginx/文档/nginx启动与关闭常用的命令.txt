@@ -1,0 +1,11 @@
+2.4.2关闭nginx
+关闭命令：相当于找到nginx进程kill。
+./nginx -s stop
+
+退出命令：
+./nginx -s quit
+等程序执行完毕后关闭，建议使用此命令。
+
+2.4.3动态加载配置文件
+./nginx -s reload
+可以不关闭nginx的情况下更新配置文件。

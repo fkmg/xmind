@@ -1,0 +1,17 @@
+、SpringMVC架构
+SpringMVC框架是一个基于请求驱动的Web框架，使用了前端控制器模式来进行设计，再根据请求映射规则
+分发给相应的页面控制器(动作/处理器)进行处理。
+
+三、SpringMVC请求处理流程
+1、发送请求给前端控制器
+2、前端控制器会找处理器映射器，处理器映射器根据请求url找到具体的处理器，生成处理器对象
+及处理器拦截器(HandlerMapping),处理器映射器根据请求url找到具体的处理器，生成处理器对象
+及处理器拦截器(如果有则生成)一并返回给DispatcherServlet.
+3、根据处理器映射器返回的处理器，DispatcherServlet会找"合适"的处理器适配器(HandlerAdapter)
+4、处理器适配器HandlerAdpater会去执行处理器(Handler开发的时候会被叫成Controller也叫后端控制器)
+执行之前会有转换器，数据绑定、校验器等等完成上面这些才会去正在执行Hanler
+5、后端控制器Handler执行完成之后返回一个ModelAndView对象
+6、处理器适配器HandlerAdpater会将这个ModelAndView返回前端控制器DispatcherServlet.前端控制器会找处理器映射器，
+处理器映射器根据请求url找到具体的处理器，生成处理器对象交给视图解析器ViewResolver
+7、视图解析器ViewResolver解析ModelAndView对象之后返回逻辑视图
+8、前端控制器DispatcherServlet对逻辑视图进行渲染(数据填充)之后返回真正的物理View并相应给浏览器。

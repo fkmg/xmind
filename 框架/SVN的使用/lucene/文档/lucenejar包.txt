@@ -1,0 +1,36 @@
+Lucene包：
+lucene-core-4.10.3.jar 核心包
+lucene-analyzers-common-4.10.3.jar 分词包
+lucene-queryparser-4.10.3.jar 查询包
+
+其它：
+commons-io-2.4.jar
+junit-4.9.jar
+
+pom.xml引入依赖
+  <dependencies>
+	   <!--  分词-->
+  	<dependency>
+	    <groupId>org.apache.lucene</groupId>
+	    <artifactId>lucene-analyzers-common</artifactId>
+	    <version>4.10.3</version>
+	</dependency>
+	<!--查询  -->
+	<dependency>
+	    <groupId>org.apache.lucene</groupId>
+	    <artifactId>lucene-queryparser</artifactId>
+	    <version>4.10.3</version>
+	</dependency>
+  	<!--junit  -->
+  	  	<dependency>
+  		<groupId>commons-io</groupId>
+  		<artifactId>commons-io</artifactId>
+  		<version>2.4</version>
+  	</dependency>
+  	<!--common-io  -->
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.12</version>
+  	</dependency>  
+</dependencies>

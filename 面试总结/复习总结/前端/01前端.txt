@@ -1,0 +1,49 @@
+1、用JavaScript实现用正则表达式验证
+Function testE(ss){
+  var reg=/^[1-9][0-9]{5}$/；
+  if(req.test(ss)){
+    alert(“邮编OK”)
+	}else{
+	  alert(“邮编格式不正确”)；
+	}
+}
+
+2、请使用JQuery将页面上的所有元素边框设置为2pix宽的虚线
+$(“*”).css(“border”,”2px dashed”)
+3、如何设定JQuery异步调用还是同步调用
+$.ajax({
+  async:true//表示异步，false表示同步
+})
+
+4、_body中的onload()函数和jQuery中document.ready()有什么区别？
+答案：ready事件的触发，表示文档结构已经加载完成（不包含图片等非文字媒体文件）。onload 事件的触发，表示页面包含图片等文件在内的所有元素都加载完成
+
+5、分别写出一个div居中和其中的内容居中的css属性设置
+Div居中：
+        margin:auto 0px;
+内容居中：
+        text-align:center;
+
+EasyUI中datagrid刷新当前数据的方法？
+
+        答案：使用reload()即可
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+static <T> boolean  1、addAll (Collection<? super T> c, T... elements)   将所有指定元素添加到指定 collection 中。
+
+package 类集;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+public class test1{
+    public static void main(String args[]){
+        
+        List<String> all = new ArrayList<String>() ;   
+        Collections.addAll(all,"MLDN","LXH","mldnjava") ;　　//给 ALL 加入各种类型数据
+        Iterator<String> iter = all.iterator() ;
+        while(iter.hasNext()){
+            System.out.print(iter.next() + "、") ;
+        }
+    }
+};
+
+

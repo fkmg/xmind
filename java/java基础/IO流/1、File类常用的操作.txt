@@ -1,0 +1,32 @@
+1、创建目录的操作
+mkdir();//无则创建有则返回false
+mkdirs();//创建多级目录
+createNewFile() //创建新的文件
+//2、文件三种构建方法
+File(String fileName);
+File(String directoryPath,String fileName);
+File(File f,String fileName);
+
+//3、文件的常用属性
+
+//获取文件名称
+getName();
+
+//判断文件是否存在
+exits();
+
+//判断文件是否是目录
+isDirectory() 
+
+//列取目录下的文件
+listFiles() 
+listFiles(FileFilter filter) 
+listFiles(FilenameFilter filter) 
+
+//列取根目录
+listRoots() 
+
+//删除文件
+delete() 
+
+

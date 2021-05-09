@@ -1,0 +1,25 @@
+一、下载zookeeper 
+
+1、wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz
+
+2、解压
+tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz
+
+3、启动命令
+zkServer.sh start conf/zoo.cfg
+
+4、检测是否启动成功
+echo stat | nc 192.168.109.200 // 前提是配置文件中中讲 stat 四字命令设置了了白名单
+
+5、连接服务器
+zkCli.sh ‐server ip:port
+
+
+二、常用命令
+1、查看节点状态信息
+stat /test‐node
+ 
+2、查看子节点信息，比如根节点下面的所有子节点， 加一个大写 R 可以查看递归子节点列表
+ls
+
+

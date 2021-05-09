@@ -1,0 +1,7 @@
+1、将结果集转换成对象的集合 
+BeanListHandler<UserP> handler = new BeanListHandler<>(UserP.class);
+List<UserP> us = handler.handle(rst);
+
+2、将结果集转换成数组
+ ArrayHandler handler = new ArrayHandler();
+ Object[] objs =handler.handle(rs);

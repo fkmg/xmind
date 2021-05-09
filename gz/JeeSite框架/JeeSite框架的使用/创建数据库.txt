@@ -1,0 +1,20 @@
+/src/main/resources/config/application.yml（v4.0.x：/src/main/resources/config/jeesite.yml） 配置产品和项目名称及JDBC连接
+
+# 产品或项目名称、软件开发公司名称
+productName: JeeSite Demo
+companyName: ThinkGem
+
+# 产品版本、版权年份
+productVersion: V4.1
+copyrightYear: 2018
+
+# 数据库连接
+jdbc: 
+
+  # Mysql 数据库配置
+  type: mysql
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://127.0.0.1:3306/jeesite?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+  username: jeesite
+  password: jeesite
+  testSql: SELECT 1

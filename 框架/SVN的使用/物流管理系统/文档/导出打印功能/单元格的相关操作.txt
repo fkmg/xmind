@@ -1,0 +1,82 @@
+3、Excel的单元格操作
+
+1、HSSFSheet sheet = workbook.createSheet("test");//创建工作表
+2、HSSFRow row = sheet.createRow(0);
+3、//设置日期格式--使用Excel的内嵌的格式
+
+4、HSSFCell cell = row.createCell(0);
+5、cell.setCellValue(new Date());
+6、HSSFCellStyle style = workbook.createCellStyle();
+7、style.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy h:mm"));
+8、cell.setCellStyle(style);
+
+//另一种是借用实用类
+
+CreationHelper helper = wb.getCreationHelper();
+style.setDataFormat(helper.createDataFormat().getFormat("yyyy-MM-dd"));
+
+9、设置保留2位小数 -- 使用Excel内嵌的样式
+
+1、cell=row.createCell(1);
+2、cell.setCellValue(12.3456789);
+3、style=workbook.createCellStyle();
+4、style.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+5、cell.setCellStyle(style);
+
+//设置货币格式 -- 使用自定义的格式
+
+1、cell = row.createCell(2);
+2、cell.setCellCValue(12345.6789);
+3、style = workbook.createCellStyle();
+4、style.setDataFormat(workbook.createDataFormat().getFormat("￥#,##0"));
+5、cell.setCellStyle(style);
+
+//设置百分比格式 -- 使用自定义的格式
+1、cell =row.createCell(3);
+2、cell.setCellValue(0.123456789);
+3、style = workbook.createCellStyle();
+4、style.setDataFormat(workbook.createDataFormat().getFormat("0.00%"));
+5、cell.setCellStyle(style);
+
+//设置中文大小写格式 -- 使用自定义的格式
+
+1、cell = row.createCell(4);
+2、cell.setCellValue(123456);
+3、style = workbook.createCellStyle();
+4、style.setDataFormat(workbook.createDataFormat().getFormat("[DbNum2][$-804]0"));
+
+//设置科学计数法格式 -- 使用自定义的格式
+1、cell = row.createCell(5);
+2、cell.setCellValue(12345);
+3、style = workbook.createCellStyle();
+4、style.setDataFormat(workbook.createDataFormat("0.00E+00"));
+5、cell.setCellStyle(style);
+
+
+    HSSFDataFormat.getFormat和HSSFDataFormat.getBuiltinFormat的区别： 
+当使用Excel内嵌的（或者说预定义）的格式时，直接用HSSFDataFormat.getBuiltinFormat静态方法即可。
+当使用自己定义的格式时，必须先调用HSSFWorkbook.createDataFormat()，因为这时在底层会先找有没有匹配的内嵌FormatRecord，
+如果没有就会新建一个FormatRecord，所以必须先调用这个方法，然后你就可以用获得的HSSFDataFormat实例的getFormat方法了，
+当然相对而言这种方式比较麻烦，所以内嵌格式还是用HSSFDataFormat.getBuiltinFormat静态方法更加直接一些。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,150 @@
+public void print(String inputDate, HttpSession session, HttpServletResponse response) throws Exception{
+       //1、从session中获取根目录
+        String path = session.getServletContext().getRealPath("/");
+        //2、从数据库
+        List<ContractC> cs = service.findReportByMonth(inputDate);
+        //2、声明文件流
+        FileInputStream in = new FileInputStream(new File(path + "/make/xlsprint/txOutProduct.xls"));
+        //3、加载模板读取对象
+        HSSFWorkbook wb = new HSSFWorkbook(in);
+
+        //4、定义三种不同的样式
+        CellStyle thintext = text(wb);//加线
+        CellStyle textLine = textLine(wb);//带自动换行的线
+        CellStyle date = date(wb);//日期的格式
+
+        //5、选择第一个工作谱序号为0
+        HSSFSheet sheetAt = wb.getSheetAt(0);
+        //6、获取第一行
+        HSSFRow tt = sheetAt.getRow(0);
+        //7、获取第1个单元格
+        HSSFCell cell = tt.getCell(1);
+        String[] sp = inputDate.split("-");
+        String title = sp[0] + "年" + sp[1] + "月份出货表";
+        //8、设置标题
+        cell.setCellValue(title);
+
+        //定义一个行索引一个列索引
+
+        int r = 2;
+        //定义列索引
+        int c =1;
+        if(cs!=null&&cs.size()>0){
+            for(ContractC cc :cs){
+                //循环货物
+                if(cc.getContractProducts()!=null&&cc.getContractProducts().size()>0){
+                    for(ContractProductC cpc : cc.getContractProducts()){
+                        HSSFRow row = sheetAt.createRow(r);
+                        row.createCell(c).setCellValue(cc.getCustomName());
+                        row.getCell(c).setCellStyle(thintext);
+                        c++;
+                        row.createCell(c).setCellValue(cc.getContractNo());
+                        row.getCell(c).setCellStyle(thintext);
+                        c++;
+                        row.createCell(c).setCellValue(cpc.getProductNo());
+                        row.getCell(c).setCellStyle(thintext);
+                        c++;
+                        row.createCell(c).setCellValue(cpc.getCnumber());
+                        row.getCell(c).setCellStyle(thintext);
+                        c++;
+                        row.createCell(c).setCellValue(cpc.getFactoryName());
+                        row.getCell(c).setCellStyle(thintext);
+                        c++;
+                        HSSFCell ce = row.createCell(c);
+                        ce.setCellStyle(textLine);
+                        //拼接附件
+                        StringBuffer fj = new StringBuffer();
+                        if(cpc.getExtCproductCs()!=null&&cpc.getExtCproductCs().size()>0){
+                                for(ExtCproductC e : cpc.getExtCproductCs()){
+                                    fj.append(e.getProductDesc()).append("\r\n");
+                                }
+                            }
+                        ce.setCellValue(fj.toString());
+                        c++;
+                        row.createCell(c).setCellValue(cc.getDeliveryPeriod());
+                        row.getCell(c).setCellStyle(date);
+                        c++;
+                        row.createCell(c).setCellValue(cc.getShipTime());
+                        row.getCell(c).setCellStyle(date);
+                        c++;
+                        row.createCell(c).setCellValue(cc.getTradeTerms());
+                        row.getCell(c).setCellStyle(thintext);
+                        r++;
+                        c = 1;
+                        }
+                    }
+                }
+            }
+        //下载文件弹出下载框
+        //4.弹出下载
+        response.setContentType("application/octet-stream");
+        String returnName = response.encodeURL(new String((title + ".xls").getBytes(), "iso8859-1"));
+        response.addHeader("Content-Disposition", "attachment;filename=" + returnName);
+        wb.write(response.getOutputStream());
+    }
+
+
+
+    //文字样式
+    public CellStyle text(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
+        font.setFontName("Times New Roman");
+        font.setFontHeightInPoints((short)10);
+        style.setFont(font);
+        style.setAlignment(HorizontalAlignment.CENTER);//横向居中
+        style.setVerticalAlignment(VerticalAlignment.CENTER);//纵向居中
+        style.setBorderTop(BorderStyle.THIN);//上细线
+        style.setBorderBottom(BorderStyle.THIN);                //下细线
+        style.setBorderLeft(BorderStyle.THIN);                    //左细线
+        style.setBorderRight(BorderStyle.THIN);                //右细线
+        //设置背景颜色
+        style.setFillForegroundColor(IndexedColors.PINK.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return style;
+
+    }
+    //文字格式自动换行
+    public CellStyle textLine(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
+        font.setFontName("Times New Roman");
+        font.setFontHeightInPoints((short) 10);
+        style.setWrapText(true);
+        style.setFont(font);
+        style.setAlignment(HorizontalAlignment.CENTER);                    //横向居左
+        style.setVerticalAlignment(VerticalAlignment.CENTER);        //纵向居中
+
+        style.setBorderTop(BorderStyle.THIN);                    //上细线
+        style.setBorderBottom(BorderStyle.THIN);                //下细线
+        style.setBorderLeft(BorderStyle.THIN);                    //左细线
+        style.setBorderRight(BorderStyle.THIN);                //右细线
+
+        return style;
+    }
+
+    //日期用yyyy-MM-dd样式
+    public CellStyle date(Workbook wb) {
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
+        font.setFontName("Times New Roman");
+        font.setFontHeightInPoints((short) 10);
+
+        style.setFont(font);
+
+        style.setAlignment(HorizontalAlignment.CENTER);                    //横向居左
+        style.setVerticalAlignment(VerticalAlignment.CENTER);        //纵向居中
+
+        style.setBorderTop(BorderStyle.THIN);                    //上细线
+        style.setBorderBottom(BorderStyle.THIN);                //下细线
+        style.setBorderLeft(BorderStyle.THIN);                    //左细线
+        style.setBorderRight(BorderStyle.THIN);               //右细线
+
+
+        //使用工具类
+        CreationHelper helper = wb.getCreationHelper();
+        style.setDataFormat(helper.createDataFormat().getFormat("yyyy-MM-dd"));
+        return style;
+    }
+
+

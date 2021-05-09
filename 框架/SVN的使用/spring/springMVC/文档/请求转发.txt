@@ -1,0 +1,10 @@
+controller方法执行后继续执行另一个controller方法，如下商品修改提交后转向到商品修改
+页面，修改商品的id参数可以带到商品修改方法中。
+//结果转发到editItem.action，request可以带过去
+return "forward:editItem.action";
+
+################################################
+forward方式相当于“request.getRequestDispatcher().forward(request,response)”，
+转发后浏览器地址栏还是原来的地址。转发并没有执行新的request和response，
+而是和转发前的请求共用一个request和response。所以转发前请求的参数在转发后仍然可以
+读取到。

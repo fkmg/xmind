@@ -1,0 +1,108 @@
+SpringBoot整合异常处理
+方式一 自定义错误页面
+
+缺点:
+1、错误的页面的名字必须是在src/main/resources/templates 
+目录下创建 error.html 页面。注意：名称必须叫 error
+2、错误页面取异常的信息需用${exception}
+
+方式二 @Exception注解处理异常
+
+需在每个controller中创建处理异常的方法并添加@ExceptionHandler(value={异常的完全限定名})
+
+缺点:需在没个controller中都需要添加异常处理
+
+优点:相对于方式一页面的名字和取异常信息时可自定义
+
+方式三 @ControllerAdvice+@Exception
+
+优点:在方式二优点的基础上，能够处理整个controller层的异常
+
+
+方式四 配置SimpleMappingExceptionResolver处理异常
+在全局异常类中添加一个方法完成异常的同一处理
+
+************重点
+方式五 自定义HandlerExceptionResolver类处理异常
+在全局异常处理类中实现HandlerExceptionResolver
+
+/**
+ * 通过SimpleMappingExceptionResolver做全局异常处理
+ */
+@Configuration
+public class GlobalException {
+	
+	/**
+	 * 该方法必须要有返回值。返回值类型必须是：SimpleMappingExceptionResolver
+	 */
+	@Bean
+	public SimpleMappingExceptionResolver getSimpleMappingExceptionResolver(){
+		SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
+		
+		Properties mappings = new Properties();
+		
+		/**
+		 * 参数一：异常的类型，注意必须是异常类型的全名
+		 * 参数二：视图名称
+		 */
+		mappings.put("java.lang.ArithmeticException", "error1");
+		mappings.put("java.lang.NullPointerException","error2");
+		
+		//设置异常与视图映射信息的
+		resolver.setExceptionMappings(mappings);
+		
+		return resolver;
+	}
+	
+}
+
+
+错误页面中取错误的信息需要使用
+
+/**
+ * 通过实现HandlerExceptionResolver接口做全局异常处理
+ */
+@Configuration
+public class GlobalException implements HandlerExceptionResolver {
+
+	@Override
+	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
+			Exception ex) {
+		ModelAndView mv = new ModelAndView();
+		//判断不同异常类型，做不同视图跳转
+		if(ex instanceof ArithmeticException){
+			mv.setViewName("error1");
+		}
+		
+		if(ex instanceof NullPointerException){
+			mv.setViewName("error2");
+		}
+		mv.addObject("error", ex.toString());
+		
+		return mv;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

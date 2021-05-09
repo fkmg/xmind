@@ -1,0 +1,4 @@
+这四者之间的关系式：server继承main，location继承server，upstream既不会继承其他设置也不会被继承。
+在这四个部分当中，每个部分都包含若干指令，这些指令主要包含Nginx的主模块指令、事件模块指令、
+HTTP核心模块指令，同时每个部分还可以使用其他HTTP模块指令，例如Http SSL模块、HttpGzip Static
+模块和Http Addition模块等。

@@ -1,0 +1,61 @@
+1、布局选项
+fit 当设置为 true 时，就设置布局（layout）的尺寸适应它的父容器。当在 'body' 标签上创建布局（layout）时，它将自动最大化到整个页面的全部尺寸。
+2、区域面板选项()
+2.1 title 布局面板的标题文本
+2.2 region 定义布局面板(laout panel)的位置，其值是下列之一:north、south、east、west、center.
+2.3 borer boolean 当设置为true时,就显示布局面板的边框
+2.4 split 当设置为true时，就显示拆分栏，用户可以用它改改变面板(panel)的尺寸.
+2.5 iconCls 在面板头部显示一个图标的CSS class
+2.6 collapsible	定义是否显示可折叠按钮
+
+3.方法
+名称		参数		描述
+
+resize		none		设置布局（layout）的尺寸。
+panel		region		返回指定的面板（panel），'region' 	参数可能的值是：'north'、'south'、'east'、'west'、'center'。
+collapse	region		折叠指定的面板（panel），'region' 参数可能的值是：'north'、'south'、'east'、'wes
+expand		region		展开指定的面板（panel），'region' 参数可能的值是：'north'、'south'、'east'、'west'。
+add			options		添加一个指定的面板（panel），options 参数一个配置对象，更多细节请参阅标签页面板（tab panel）属性。
+remove		region		移除指定的面板（panel），'region' 参数可能的值：'north'、'south'、'east'、'west'。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

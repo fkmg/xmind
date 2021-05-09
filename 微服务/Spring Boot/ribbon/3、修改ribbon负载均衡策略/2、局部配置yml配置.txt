@@ -1,0 +1,5 @@
+# 被调用的微服务名
+mall-order:
+  ribbon:
+    # 指定使用Nacos提供的负载均衡策略（优先调用同一集群的实例，基于随机&权重）
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule

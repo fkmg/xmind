@@ -1,0 +1,19 @@
+默认情况下，每个用户在自己的用户目录下都有一个路径名为 .m2/repository 的仓库目录。
+例如，笔者的用户名是fengwei，我在 mac 机器上的本地仓库地址为
+?/Users/fengwei/.m2/repository 。
+
+有时候，因为某些原因（例如 C 盘空间不够），
+用户会想要自定义本地仓库目录地址。这时可以编辑 ~/.m2/settings.xml ，
+设置localRepository 元素的值为想要的仓库地址。
+例如
+
+
+<settings>
+	
+	<localRepository>~/Documents/nexus/repository</localRepository>
+
+</settings>
+这样，该用户的本地仓库地址就被设置成了~/Documents/nexus/repository 。
+
+需要注意的是，默认情况下，~/.m2/settings.xml 文件是不存在的，用户需要从 Maven 
+安装目录复制 $M2_HOME/conf/settings.xml 到~/.m2 目录在进行编辑（建议不要直接修改全局目录的 settings.xml 文件）。

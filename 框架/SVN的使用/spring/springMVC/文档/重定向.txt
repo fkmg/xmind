@@ -1,0 +1,29 @@
+4.1.7.1@RequestMapping: 通过RequestMapping注解可以定义不同的处理器映射规则。
+URL路径映射
+@RequestMapping(value="/item")或@RequestMapping("/item”）
+value的值是数组，可以将多个url映射到同一个方法
+窄化请求映射
+在class上添加@RequestMapping(url)指定通用请求前缀， 限制此类下的所有方法请求url必须以请求前缀开头，通过此方法对url进行分类管理。
+如下：
+@RequestMapping放在类名上边，设置请求前缀 
+@Controller
+@RequestMapping("/item")
+方法名上边设置请求映射url：
+@RequestMapping放在方法名上边，如下：
+@RequestMapping("/queryItem ")
+访问地址为：/item/queryItem
+
+
+请求方法限定 
+?限定GET方法
+@RequestMapping(method = RequestMethod.GET)
+如果通过Post访问则报错：
+HTTP Status 405 - Request method 'POST' not supported
+例如：
+@RequestMapping(value="/editItem",method=RequestMethod.GET)
+?限定POST方法
+@RequestMapping(method = RequestMethod.POST)
+如果通过Post访问则报错：
+HTTP Status 405 - Request method 'GET' not supported
+?GET和POST都可以
+@RequestMapping(method={RequestMethod.GET,RequestMethod.POST})

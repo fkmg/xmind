@@ -1,0 +1,42 @@
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+/**
+ * JDK动态代理:本质上生产了一个代理类，该代理与被代理目标实现相同的接口,当前用户访问代理类中的方法是，
+ * 	将委派InvacationHandler中的invoke()方法进行处理，在invoke()方法中添加业务处理代理和回
+调被代理目标中方法。
+ * 
+ * JDK动态代理要求被代理目标必须实现接口。其生成的代理类为接口的实现类。
+ * @author Think
+ *
+ */
+public class JDKProxy implements InvocationHandler{
+	private Object target;
+	public JDKProxy() {
+	}
+	
+	/**
+	 * 获取动态生成的代理类
+	 */
+	public  Object getProxy(Object target){
+		/**
+		 *      第一个参数:loader - 定义代理类的类加载器
+			第二个参数:interfaces - 被代理类要实现的接口列表
+			第三个参数:h - 指派方法调用的调用处理程序 
+		 */
+		this.target=target;
+		return Proxy.newProxyInstance(this.getClass().getClassLoader(),target.getClass().getInterfaces(), this);
+	}
+	
+	/**
+	 * 重写InvocationHandler中的方法
+	 */
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//代理在做save()方法时会执行此invoke()方法
+		System.out.println("开启事务.....");
+		Object returnValue = method.invoke(target, args);//回调被代理类中的目标方法 save
+		System.out.println("提交事务...");
+		return returnValue;
+	}
+}

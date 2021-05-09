@@ -1,0 +1,16 @@
+1、检出 JeeSite4.x 源代码：
+
+git clone https://gitee.com/thinkgem/jeesite4.git
+2、拷贝web文件夹，到你的工作目录（不包含中文和空格的目录）下，重命名为你的工程名，如：jeesite-demo
+
+3、打开pom.xml文件，修改第13行，artifactId为你的工程名，如：<artifactId>jeesite-demo</artifactId>
+
+4、导入到 Eclipse，菜单 File -> Import，然后选择 Maven -> Existing Maven Projects，点击 Next> 按钮，选择第2步的jeesite-demo文件夹，然后点击 Finish 按钮，即可成功导入
+
+5、若 IDEA，点击 Import Project，选择 pom.xml 文件（若包含所有源码包，你需要选择 jeesite/root/pom.xml 文件），点击 Next 按钮，选择 Import Maven projects automatically 复选框，然后一直点击 Next 按钮，直到点击 Finish 按钮，即可成功导入
+
+6、这时，Eclipse（IDEA）会自动加载 Maven 依赖包，初次加载会比较慢（根据自身网络情况而定，目前使用国外Maven仓库地址，购买授权提供国内私服地址），若工程上有小叉号，请打开 Problems 窗口，查看具体错误内容，直到无错误为止
+
+7、下载依赖jar文件的过程中，你可以准备数据库环境了
+
+若在部署过程中遇见问题，请在“常见问题”中找找，看看有没有和你相同的问题

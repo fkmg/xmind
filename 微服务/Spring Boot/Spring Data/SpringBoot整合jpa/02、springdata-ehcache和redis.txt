@@ -1,0 +1,25 @@
+--------------------------------------
+一、整合ehcache
+	(1)、整合步骤
+			1、添加启动器
+				web、jpa、mysql驱动、连接池、ehcache启动器、ehcache依赖
+
+			2、拷贝ehcache.xml
+				ehcache-2.10.5.jar--->resources/ehcache.xml
+
+			3、application.yml配置ehcache
+				  spring.cache.ehcache.config=classpath:ehcache.xml
+			
+			4、pojo
+				   实现Serializable 
+
+			5、service
+				方法： @Cacheable(value="users")
+
+			6、app
+				@EnableCaching
+	（2） @Cacheable	
+			例如：key="#pageable.pageSize"，如果pageSize不变，则走缓存
+
+	 （3） @CacheEvict 
+			作用：清除缓存

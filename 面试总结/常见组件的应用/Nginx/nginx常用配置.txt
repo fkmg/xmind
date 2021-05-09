@@ -1,0 +1,77 @@
+一、Nginx的配置文件结构
+nginx最外面的块是main,main包含Events和HTTP,HTTP包含upstream和多个Server,Server又包含多个location;
+
+main块设置的指令将影响其他所有设置;
+
+server块的指令主要用于指定主机和端口;
+
+upstream指令主要用于负载均衡，设置一系列的后端服务器;
+
+location块用于匹配网页位置。
+
+二、Nginx的全局配置
+
+1、user是个主模块指令，指定Nginx Worker进程运行用户以及用户组，默认由nobody账号运行。
+2、worker_processes是个主模块指令，指定了Nginx要开启的进程数。每个Nginx进程平均耗费10M~12M内存。建议指定和CPU的数量一致即可。
+3、error_log是个主模块指令，用来定义全局错误日志文件。日志输出级别有debug、info、notice、warn、error、crit可供选择，其中，debug输出日志最为最详细，而crit输出日志最少。
+pid是个主模块指令，用来指定进程pid的存储文件位置。
+4、worker_rlimit_nofile用于绑定worker进程和CPU， Linux内核2.4以上可用。
+
+Nginx负载均衡支持的4种调度算法
+轮询（默认）：每个请求按时间顺序逐一分配到不同的后端服务器，如果后端某台服务器宕机，故障系统被自动剔除，使用户访问不受影响；
+Weight：指定轮询权值，Weight值越大，分配到的访问机率越高，主要用于后端每个服务器性能不均的情况下；
+ip_hash：每个请求按访问IP的hash结果分配，这样来自同一个IP的访客固定访问一个后端服务器，有效解决了动态网页存在的session共享问题；
+fair：比上面两个更加智能的负载均衡算法。此种算法可以依据页面大小和加载时间长短智能地进行负载均衡，也就是根据后端服务器的响应时间来分配请求，响应时间短的优先分配。Nginx本身是不支持fair的，如果需要使用这种调度算法，必须下载Nginx的upstream_fair模块；
+url_hash：按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，可以进一步提高后端缓存服务器的效率。Nginx本身是不支持url_hash的，如果需要使用这种调度算法，必须安装Nginx 的hash软件包。
+
+
+在HTTP Upstream模块中，可以通过server指令指定后端服务器的IP地址和端口，同时还可以设定每个后端服务器在负载均衡调度中的状态。常用的状态有：
+
+down：表示当前的server暂时不参与负载均衡；
+backup：预留的备份机器。当其他所有的非backup机器出现故障或者忙的时候，才会请求backup机器，因此这台机器的压力最轻；
+max_fails：允许请求失败的次数，默认为1。当超过最大次数时，返回proxy_next_upstream 模块定义的错误；
+fail_timeout：在经历了max_fails次失败后，暂停服务的时间。max_fails可以和fail_timeout一起使用。
+注意，当负载调度算法为ip_hash时，后端服务器在负载均衡调度中的状态不能是weight和backup。
+
+
+worker_connections也是个事件模块指令，用于定义Nginx每个进程的最大连接数，默认是1024。最大客户端连接数由worker_processes和worker_connections决定，即Max_client=worker_processes*worker_connections。
+在作为反向代理时，max_clients变为：max_clients = worker_processes * worker_connections/4。
+进程的最大连接数受Linux系统进程的最大打开文件数限制，在执行操作系统命令“ulimit -n 65536”后worker_connections的设置才能生效一、Nginx的配置文件结构
+nginx最外面的块是main,main包含Events和HTTP,HTTP包含upstream和多个Server,Server又包含多个location;
+
+main块设置的指令将影响其他所有设置;
+
+server块的指令主要用于指定主机和端口;
+
+upstream指令主要用于负载均衡，设置一系列的后端服务器;
+
+location块用于匹配网页位置。
+
+二、Nginx的全局配置
+
+1、user是个主模块指令，指定Nginx Worker进程运行用户以及用户组，默认由nobody账号运行。
+2、worker_processes是个主模块指令，指定了Nginx要开启的进程数。每个Nginx进程平均耗费10M~12M内存。建议指定和CPU的数量一致即可。
+3、error_log是个主模块指令，用来定义全局错误日志文件。日志输出级别有debug、info、notice、warn、error、crit可供选择，其中，debug输出日志最为最详细，而crit输出日志最少。
+pid是个主模块指令，用来指定进程pid的存储文件位置。
+4、worker_rlimit_nofile用于绑定worker进程和CPU， Linux内核2.4以上可用。
+
+Nginx负载均衡支持的4种调度算法
+轮询（默认）：每个请求按时间顺序逐一分配到不同的后端服务器，如果后端某台服务器宕机，故障系统被自动剔除，使用户访问不受影响；
+Weight：指定轮询权值，Weight值越大，分配到的访问机率越高，主要用于后端每个服务器性能不均的情况下；
+ip_hash：每个请求按访问IP的hash结果分配，这样来自同一个IP的访客固定访问一个后端服务器，有效解决了动态网页存在的session共享问题；
+fair：比上面两个更加智能的负载均衡算法。此种算法可以依据页面大小和加载时间长短智能地进行负载均衡，也就是根据后端服务器的响应时间来分配请求，响应时间短的优先分配。Nginx本身是不支持fair的，如果需要使用这种调度算法，必须下载Nginx的upstream_fair模块；
+url_hash：按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，可以进一步提高后端缓存服务器的效率。Nginx本身是不支持url_hash的，如果需要使用这种调度算法，必须安装Nginx 的hash软件包。
+
+
+在HTTP Upstream模块中，可以通过server指令指定后端服务器的IP地址和端口，同时还可以设定每个后端服务器在负载均衡调度中的状态。常用的状态有：
+
+down：表示当前的server暂时不参与负载均衡；
+backup：预留的备份机器。当其他所有的非backup机器出现故障或者忙的时候，才会请求backup机器，因此这台机器的压力最轻；
+max_fails：允许请求失败的次数，默认为1。当超过最大次数时，返回proxy_next_upstream 模块定义的错误；
+fail_timeout：在经历了max_fails次失败后，暂停服务的时间。max_fails可以和fail_timeout一起使用。
+注意，当负载调度算法为ip_hash时，后端服务器在负载均衡调度中的状态不能是weight和backup。
+
+
+worker_connections也是个事件模块指令，用于定义Nginx每个进程的最大连接数，默认是1024。最大客户端连接数由worker_processes和worker_connections决定，即Max_client=worker_processes*worker_connections。
+在作为反向代理时，max_clients变为：max_clients = worker_processes * worker_connections/4。
+进程的最大连接数受Linux系统进程的最大打开文件数限制，在执行操作系统命令“ulimit -n 65536”后worker_connections的设置才能生效

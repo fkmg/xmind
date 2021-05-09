@@ -1,0 +1,11 @@
+设置字体
+1、HSSFCell cell = row.createCell(1);
+2、cell.setCellValue("设置字体");
+3、HSSFCellStyle style = workbook.createCellStyle();
+4、HSSFFont font = workbook.createFont();
+5、font.setFontName("华文行楷");//设置字体名称
+6、font.setFontHeightPoints((short)28);//设置字号
+7、font.setColor(HSSF.RED.index);//设置字体颜色
+8、font.setUnderline(FontFormatting.U_SINGLE);//设置下划线
+9、font.setTypeOffset(FontFOrmatting.SS_SUPER);//设置上标下标
+10、font.setStrikeout(true);//设置删除线

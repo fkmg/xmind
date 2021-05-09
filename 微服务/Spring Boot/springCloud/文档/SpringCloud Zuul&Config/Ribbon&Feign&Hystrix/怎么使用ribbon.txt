@@ -1,0 +1,106 @@
+﻿-------------------------------------Ribbon-----------------------------------------
+一、注册中心
+
+	1、需要的依赖 : web、spring-cloud-starter-eureka-server
+	2、配置文件yml:
+		端口号、不注册自己、不从自己中取服务、注册中心地址
+		eureka.client.registerWithEureka=false
+		eureka.client.fetchRegistry=false
+		eureka.client.serviceUrl.defaultZone=http://127.0.0.1:8761/eureka/
+	3、启动类中
+	@EnableEurekaServer
+	@SpringBootApplication
+	
+二、提供者
+	
+	1、需要的依赖 : web、spring-cloud-starter-eureka....mysql、连接池、jpa等
+	
+	2、配置文件yml:
+		
+		端口号、服务名、注册地址数据源等等
+		
+	3、启动类中
+		
+		@SpringBootApplication
+		@EnableEurekaClient
+		
+三、消费者
+	
+	1、需要的依赖: web、spring-cloud-starter-eureka、spring-cloud-starter-ribbon
+	
+	2、配置文件yml:
+		
+		端口号、服务名、注册地址
+	
+	3、创建configure包
+	
+		@Configuration
+		public class ConfigBean {
+			@Bean
+			@LoadBalanced //默认使用轮循的策略
+			public RestTemplate getRestTemplate(){
+				return new RestTemplate();
+			}
+			
+			@Bean
+			public RandomRule getRuleribbonRule() {
+				return new RandomRule();//这里配置策略，和配置文件对应
+			}
+			
+		}
+	
+	4、启动类中
+	
+		@SpringBootApplication
+		@EnableEurekaClient
+		
+++++++++++++++++++++++++++++++++++++++++Feign+++++++++++++++++++++++++++++++++++++
+
+一、创建springcloud-eureka-feign-api工程
+	
+	1、需要的依赖 spring-cloud-starter-feign
+	
+	2、创建接口
+	
+		@FeignClient(value="eureka-provider")
+		public interface UserServiceApi {
+
+			@RequestMapping(value="/user",method=RequestMethod.GET)
+			public User getUser();
+		}
+
+二、创建 springcloud-eureka-feign-consumer工程
+
+	1、需要的依赖: web、eureka、feign启动器、spring-cloud-starter-feign
+	springcloud-eureka-feign-api工程的依赖
+	
+	2、yml配置 :端口号、服务名、注册地址
+
+	3、启动类中
+	
+		@EnableEurekaClient
+		@SpringBootApplication
+		@EnableFeignClients
+		
+*******************************总结********************************
+	传参方式:
+		
+		1、restful:
+			
+			@PathVariable("参数")
+			
+		2、url：
+		
+			普通：@RequestParam("参数")
+			
+			对象：@RequestBody 对象(注意：添加到api和provider中)
+
+
+
+
+
+
+
+
+
+

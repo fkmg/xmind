@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    <hibernate-mapping>
+        <class name="com.sxt.model.Product" table="Product">
+            <id name="proid">
+                <!--会根据不同的数据库创建不同的id-->
+                <generator class="native"></generator>
+            </id>
+            <property name="proname"></property>
+            <property name="price"></property>
+            <!--type制定时间的类型-->
+            <property name="prodate" type="date"></property>
+            <property name="brandid"></property>
+        </class>
+        <class name="com.sxt.model.Brand" table="brand">
+            <id name="brandid">
+                <!--会根据不同的数据库创建不同的id-->
+                <generator class="native"></generator>
+            </id>
+            <property name="branname"></property>
+        </class>
+    </hibernate-mapping>

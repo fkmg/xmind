@@ -1,0 +1,28 @@
+配置文件的小结:
+1.      bean标签
+a)       属性id : 可选属性, 代表当前bean的唯一标识,此属性值全应用唯一. 且一个bean只有唯一的一个id
+b)       属性class: 可选属性, 代表当前bean的具体类. 属性值必须是类的全命名
+c)        属性name: 可选属性, 代表当前bean的别名, 此属性的值全应用唯一. 一个bean可以有多个别名
+d)       属性abstract: 可选属性, 代表当前bean不直接实例化. 只能作为其他bean的父对象存在. 通过getBean方法直接获取这个bean的实例,会抛出异常.
+e)       属性factory-bean: 可选属性, 代表当前bean使用什么工厂bean创建对象. 此属性与class属性互斥.
+f)        属性factory-method: 可选属性, 代表当前bean通过工厂的什么方法创建对象.
+g)       属性scope: 可选属性, 代表当前bean的作用域. 现可选值有: singleton 和 prototype
+                                 i.            singleton -> 对象单例,一个Spring容器只创建一次对象.
+                               ii.            prototype -> 对象多例,一个Spring容器创建多次对象, 每次访问容器获取bean都创建对象
+h)       属性parent: 可选属性, 代表当前bean的父对象. 可以继承父对象的所有模板特性.
+i)     属性:init-method:可选属性,代表当前bean对象进行初始化工作
+j)     属性:destory-method:可选属性,代表当前bean对象进行销毁工作
+
+2.      alias标签
+a)       属性name: 必要属性, 代表为哪一个bean配置别名, 此属性的值为其他bean标签的id或name属性值
+b)       属性alias: 必要属性, 代表新命名的别名是什么
+3.      import标签
+a)       属性resource: 必要属性, 代表要导入的配置文件路径及名称. 寻址地址从classpath开始.
+4.   property标签
+ a)   属性name：必要属性,代表bean的属性名称，必须与bean的属性名称一致，使用setter注入为属性赋值。
+b)   属性value:  代表为属性注入常量值
+c)    属性 ref: 代表为属性注入容器中的对象，必须与待注入的bean的id一致
+5. constructor-arg标签:构造方法注入
+     index:参数的下标,从0开始
+     value:参数的值
+     ref:引用容器中bean的id

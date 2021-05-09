@@ -1,0 +1,288 @@
+var setting={
+  treeId : "",treeObj : null,
+//zTree 的唯一标识，初始化后，等于 用户定义的 zTree 容器的 id 属性值。
+注:请勿进行初始化 或 修改，属于内部参数。
+
+  async: {
+	   autoParam:[],
+	   contentType : "application...",
+	   dataFilter : null,
+	   dataType : "text",
+	   enable : fale,
+	   otherParam : [],
+	   type : "post",
+	   headers : {},
+	   xhrFields : {},
+	   url : ""
+	 },
+
+异步加载时需要自动提交父节点属性的参数。[setting.async.enable = true 时生效]
+
+默认值：[ ]
+
+Array(String)格式说明
+1、将需要作为参数提交的属性名称，制作成Array即可，例如：["id", "name"]
+2、可以设置提交时的参数名称，例如 server 只接受 zId : ["id=zId"]
+
+Function参数说明
+treeId   String
+对应zTree的treeId,便于用户操作
+treeNode 	JSON
+需要异步加载子节点的父节点JSON数据对象
+针对根进行异步加载时，treeNode = null
+返回值Array(String)
+返回值同 Array(String) 格式的数据
+
+
+(1)、setting 举例
+
+
+1、设置id属性为自动提交的参数
+var setting = {
+	async: {
+		enable: true,
+		url: "http://host/getNode.php",
+		autoParam: ["id"]
+	}
+};
+假设 异步加载 父节点(node = {id:1, name:"test"}) 的子节点时，将提交参数 id=1
+......
+2. 设置 id 属性作为 zId 成为自动提交的参数
+
+var setting = {
+	async: {
+		enable: true,
+		url: "http://host/getNode.php",
+		autoParam: ["id=zId"]
+	}
+};
+假设 对父节点 node = {id:1, name:"test"}，进行异步加载时，将提交参数 zId=1
+
+(2)contentType
+
+Ajax 提交参数的数据类型。[setting.async.enable = true 时生效]
+
+默认值："application/x-www-form-urlencoded"
+1、String 格式说明
+contentType = "application/x-www-form-urlencoded" 可以满足绝大部分请求，按照标准的 Form 格式提交参数
+
+contentType = "application/json" 可以满足 .Net 的编程需要，按照 JSON 格式提交参数
+
+将ajex提交参数类型设置为JSON
+var setting = {
+	async: {
+		enable: true,
+		contentType: "application/json",
+		url: "http://host/getNode.php",
+		autoParam: ["id", "name"]
+	}
+};
+
+(3)dataFilter
+
+用于对 Ajax 返回数据进行预处理的函数。[setting.async.enable = true 时生效]
+
+默认值：null
+
+treeIdString
+对应 zTree 的 treeId，便于用户操控
+
+parentNodeJSON
+进行异步加载的父节点 JSON 数据对象
+
+对根进行异步加载时，parentNode = null
+
+responseDataArray(JSON) / JSON / String
+异步加载获取到的数据转换后的 Array(JSON) / JSON / String 数据对象
+
+1. 修改异步获取到的节点name属性
+function ajaxDataFilter(treeId, parentNode, responseData) {
+    if (responseData) {
+      for(var i =0; i < responseData.length; i++) {
+        responseData[i].name += "_filter";
+      }
+    }
+    return responseData;
+};
+var setting = {
+	async: {
+		enable: true,
+		url: "http://host/getNode.php",
+		dataFilter: ajaxDataFilter
+	}
+};
+
+(4) dataType 
+
+Ajax 获取的数据类型。[setting.async.enable = true 时生效]
+
+默认值："text"
+
+String 格式说明
+dataType = "text" 可以满足绝大部分请求
+
+其余 dataType 类型请参考 jQuery ajax 中的 dataType 参数
+
+setting 举例
+1. 设置 Ajax 获取的数据类型为 纯文本
+var setting = {
+	async: {
+		enable: true,
+		dataType: "text",
+		url: "http://host/getNode.php",
+		autoParam: ["id", "name"]
+	}
+};
+
+(5) enable
+
+设置 zTree 是否开启异步加载模式
+
+默认值：false
+
+Boolean 格式说明
+true 表示 开启 异步加载模式
+
+false 表示 关闭 异步加载模式
+
+如果设置为 true，请务必设置 setting.async 内的其它参数。
+
+如果需要根节点也异步加载，初始化时 treeNodes 参数设置为 null 即可。
+setting 举例
+1. 需要开启异步加载模式
+var setting = {
+	async: {
+		enable: true,
+		url: "http://host/getNode.php",
+		autoParam: ["id", "name"]
+	}
+};
+
+(6)otherParam :[]
+
+Ajax 请求提交的静态参数键值对。[setting.async.enable = true 时生效]
+
+默认值：[ ]
+
+Array(String) 格式说明
+可以为空[ ]，如果有 key，则必须存在 value。 例如：[key, value]
+
+JSON 格式说明
+直接用 JSON 格式制作键值对，例如：{ key1:value1, key2:value2 }
+
+Function 参数说明
+treeIdString
+对应 zTree 的 treeId，便于用户操控
+
+treeNodeJSON
+需要异步加载子节点的的父节点 JSON 数据对象
+
+针对根进行异步加载时，treeNode = null
+
+返回值Array(String) || JSON
+返回值同 Array(String) || JSON 格式的数据
+
+setting 举例
+1. 设置 Array(String) 格式的参数
+var setting = {
+	async: {
+		enable: true,
+		url: "http://host/getNode.php",
+		otherParam: ["id", "1", "name", "test"]
+	}
+};
+进行异步加载时，将提交参数 id=1&name=test
+2. 设置 JSON 格式的参数
+var setting = {
+	async: {
+		enable: true,
+		url: "http://host/getNode.php",
+		otherParam: { "id":"1", "name":"test"}
+	}
+};
+进行异步加载时，将提交参数 id=1&name=test
+
+(7)type: "post"
+
+Ajax的 http请求模式
+
+(8)url
+
+Ajax 获取数据的 URL 地址。[setting.async.enable = true 时生效]
+
+默认值：""
+
+String 格式说明
+设置固定的异步加载 url 字符串，请注意地址的路径，确保页面能正常加载
+
+url 内也可以带参数，这些参数就只能是通过 get 方式提交了，并且请注意进行转码
+
+Function 参数说明
+treeIdString
+对应 zTree 的 treeId，便于用户操控
+
+treeNodeJSON
+需要异步加载子节点的的父节点 JSON 数据对象
+
+针对根进行异步加载时，treeNode = null
+
+返回值String
+返回值同 String 格式的数据
+
+setting & function 举例
+1. 设置异步获取节点的 URL 为 nodes.php
+var setting = {
+	async: {
+		enable: true,
+		url: "nodes.php",
+		autoParam: ["id", "name"]
+	}
+};
+......
+2. 设置异步获取节点的 URL 为 function 动态获取
+function getAsyncUrl(treeId, treeNode) {
+    return treeNode.isParent ? "nodes1.php" : "nodes2.php";
+};
+var setting = {
+	async: {
+		enable: true,
+		url: getAsyncUrl,
+		autoParam: ["id", "name"]
+	}
+};
+......
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

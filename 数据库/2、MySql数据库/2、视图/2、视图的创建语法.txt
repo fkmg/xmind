@@ -1,0 +1,17 @@
+CREATE|REPLACE ： 【创建|替换已创建的】视图
+
+ALGORITHM ： 视图算法
+
+1.UNDEFINED 系统自动选择算法
+2.MERGE使用的视图语句与视图定义合并起来
+3.TEMPTABLE 结果存入临时表，然后用临时表执行语句
+view_name ： 视图名称
+
+column_list ： 属性列
+
+SELECT_STATEMENT ：SELECT语句
+
+[WITH [CASCADED | LOCAL |] CHECK OPTION] 表示视图在更新时保证在视图的权限范围内
+
+1.CASCADED 默认值 更新视图时要满足所有相关视图和表的条件，
+2.LOCAL表示更新视图时满足该视图本身定义的条件即可。

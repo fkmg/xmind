@@ -1,0 +1,8 @@
+一、 简单的使用log4j
+1、引jar包
+2、得得实例 Logger.getLogger(Log4jTest.class)
+3、使用默认的配置信息 BasicConfigurator.configure()
+4、设置级别 logger.setLevel(Level.ERROR)
+
+
+二、使用log4j格式化输出

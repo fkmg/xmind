@@ -1,0 +1,10 @@
+1、实例化(还是空壳)
+	反射->Spring
+	工厂方法->自配可以
+2、注入属性,填充属性
+3、初始化,initMethod destroy 调用Aware方法
+4、Put->Map<Class,对象> ->单例池
+
+
+BeanFactory 同:都有生产Bean的能力
+          不同:BeanFactory 只生产Bean只能指定Bean定义。管理bean之间的依赖

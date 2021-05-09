@@ -1,0 +1,194 @@
+Thymelaef特点:
+语法:
+通过特定标签对html的标记做渲染
+目录位置:/src/main/resources/templates
+
+<!DOCTYPE html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<title> Thymelaef特点</title>
+	</head>
+	<body>
+	<span th:text="Hello"></span>
+	<hr/>
+	<span th:text="${msg}"></span>
+</body>
+</html>
+
+一、Thymeleaf语法详解
+变量输出与字符串操作 
+1、 th:text
+在页面中输出值
+<span th:text="Hello"></span>
+
+2、可以将一个值放入到input标签的value中
+<th:value>
+<input type="text" name="username" th:value="${msg}"/>
+
+3、字符串操作
+
+Thymeleaf内置对象
+	语法:
+		1.调用内置对象一定用#
+		2.大部分的内置对象都以s结尾strings,numbers,dates
+			判断字符串是否为空
+			${#strings.isEmpty(key)}
+			判断字符串是否包含指定字符串，如果有返回true
+			${#strings.contains(msg,'T')}
+			判断字符串是否以字串开头
+			${#strings.startWith(msg,'a')}
+			判断字符串是否以字串结尾
+			${#strings.endWith(msg,'a')}
+			返回字符串长度
+			${#strings.length(msg)}
+			返回字符串的位置
+			${#strings.indexOf(msg,'h')}
+			截取字符串
+			${#strings.substring(msg,13)}
+			字符串转大小写
+			${#strings.toUpperCase(msg)}
+			
+	日期格式处理
+	
+		${#dates.format(key)}格式化日期，默认的以浏览器默认语言为格式化标准
+		
+		${#dates.format(key,'yyyy-MM-dd HH:mm:ss')}
+		
+		截取年月日
+		${#dates.year(key)}
+		${#dates.month(key)}
+		${dates.day(key)}
+		
+		
+	判断标签
+		th:if
+		
+		
+		th:switch th:case
+		
+		
+	迭代遍历
+	
+		th:each="u:${list}"
+	
+		状态变量属性
+		1,index:当前迭代器的索引 从 0 开始
+		2,count:当前迭代对象的计数 从 1 开始
+		3,size:被迭代对象的长度
+		4,even/odd:布尔值，当前循环是否是偶数/奇数 从 0 开始
+		5,first:布尔值，当前循环的是否是第一条，如果是返回 true 否则返回 false
+		6,last:布尔值，当前循环的是否是最后一条，如果是则返回 true 否则返回 false
+			
+			
+	域对象操作
+	HttpServletRequest
+	
+	HttpSession
+	
+	ServletContext
+	
+	
+	URL表达式
+	th:href
+	th:src
+	
+	基本语法：@{}
+	
+	1)相对于当前项目的根
+		<a th:href="@{/}"/>
+		
+	2)相当于服务器的根
+		<a th:href="@{~/}"/>
+		
+	在url中实现参数传递
+		1、普通传参
+			<a th:href="@{/param(id=1,nam=zs)}"/>
+			
+		2、4.7.4在 url中通过restful风格进行参数传递
+			<a th:href="@{/restfultParam/{id}(id=1,nam=zs)}"/>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+		
+		
+		
+		
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

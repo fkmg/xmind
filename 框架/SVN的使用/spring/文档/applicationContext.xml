@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="userDao" class="com.sxt.dao.impl.UserDaoImpl"></bean>
+    <bean id="hibernateDao" class="com.sxt.dao.impl.UserHibernateDaoImpl"></bean>
+    <bean id="userService" class="com.sxt.service.impl.UserServiceImpl">
+        <!--name属性的值与serviceImpl中的属性值相同并且还需有相应的get和set方法-->
+        <property name="userDao" ref="hibernateDao"></property>
+        <property name="age" value="24"></property>
+        <property name="userName" value="张三"></property>
+        <property name="birth" value="1994/06/15"></property>
+    </bean>
+    <bean id="testCollection" class="com.sxt.service.impl.TestCollection">
+        <property name="list">
+            <list>
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+            </list>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="1" value-ref="userDao"></entry>
+                <entry key="1" value-ref="hibernateDao"></entry>
+            </map>
+        </property>
+        <property name="set">
+            <set>
+                <value>"I"</value>
+                <value>" "</value>
+                <value>"Love"</value>
+                <value>" "</value>
+                <value>"You"</value>
+            </set>
+        </property>
+        <!--property中存储的都是字符串-->
+        <property name="prop">
+            <props>
+                <prop key="driver">com.mysql.jdbc.Driver</prop>
+                <prop key="url">jdbc:mysql://localhost:3307/cloth</prop>
+                <prop key="user">root</prop>
+                <prop key="pwd">123456</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="student" class="com.sxt.model.Student">
+        <property name="name" value="fk"></property>
+        <property name="loves">
+            <list>
+                <value>reading</value>
+                <value>thinking</value>
+                <value>palying</value>
+            </list>
+        </property>
+    </bean>
+</beans>

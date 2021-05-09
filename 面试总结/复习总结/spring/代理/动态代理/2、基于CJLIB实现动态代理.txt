@@ -1,0 +1,31 @@
+/**
+ * 方式2:基于继承的方式实现动态代理，依赖于cglib来实现的。
+ * 本质上动态生成了一个被代理目标的子类，通过多态实现功能的加强，当访问代理中的方法时，
+ * 委派给MethodInteceptor中的处理程序(intercept方法)进行出来，
+ * 在处理程序中添加了业务逻辑和回掉了被代理目标中的方法。
+ * @author Think
+ *
+ */
+public class CglibProxy implements MethodInterceptor{
+	private Object target;
+	public Object getProxy(Object target){
+		this.target=target;
+		Enhancer enhancer = new Enhancer();
+		//1.设置基类
+		enhancer.setSuperclass(target.getClass());
+		//2.设置回调接口
+		enhancer.setCallback(this);//MethodInterceptor实现类
+		//3.创建动态代理
+		return enhancer.create();
+	}
+	/**
+	 * 重写的MethodInterceptor中的intercept方法,类似于JDK动态代理InvocationHandler中invoke方法
+	 */
+	@Override
+	public Object intercept(Object proxy, Method method, Object[] args, MethodProxy proxyMethod) throws Throwable {
+		System.out.println("开启事务......");
+		Object returnValue = method.invoke(target, args);//回掉目标对象中的方法
+		System.out.println("提交是我....");
+		return returnValue;
+	}
+}

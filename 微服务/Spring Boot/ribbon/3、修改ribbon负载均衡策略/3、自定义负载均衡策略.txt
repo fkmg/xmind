@@ -1,0 +1,41 @@
+@Slf4j
+public class NacosRandomWithWeightRule extends AbstractLoadBalancerRule {
+
+    @Autowired
+    private NacosDiscoveryProperties nacosDiscoveryProperties;
+
+    @Override
+    public Server choose(Object key) {
+        DynamicServerListLoadBalancer loadBalancer = (DynamicServerListLoadBalancer) getLoadBalancer();
+        String serviceName = loadBalancer.getName();
+        NamingService namingService = nacosDiscoveryProperties.namingServiceInstance();
+        try {
+            //nacos基于权重的算法
+            Instance instance = namingService.selectOneHealthyInstance(serviceName);
+            return new NacosServer(instance);
+        } catch (NacosException e) {
+            log.error("获取服务实例异常：{}", e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+    @Override
+    public void initWithNiwsConfig(IClientConfig clientConfig) {
+
+    }
+	
+	
+局部配置
+	# 被调用的微服务名
+mall-order:
+  ribbon:
+    # 自定义的负载均衡策略（基于随机&权重）
+    NFLoadBalancerRuleClassName: com.tuling.mall.ribbondemo.rule.NacosRandomWithWeightRule
+	
+	
+	
+全局配置
+@Bean
+public IRule ribbonRule() {
+    return new NacosRandomWithWeightRule();
+}

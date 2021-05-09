@@ -1,0 +1,62 @@
+步骤1:创建User.java实体类
+package cn.zzsxt.entity;
+
+public class User {
+	private String username;
+	private String password;
+	
+	public User() {
+		System.out.println("无参的构造函数被调用了...");
+	}
+	
+	public User(String username,String password){
+		System.out.println("有参构造函数被调用....");
+		this.username=username;
+		this.password=password;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + "]";
+	}
+}
+
+
+步骤2:创建UserFactory工厂类，并在其中提供静态工程方法getUserInstance()
+package cn.zzsxt.entity;
+/**
+ * 静态工程方法:类名.方法名进行调用工厂方法。
+ * @author Think
+ *
+ */
+public class UserFactory {
+	public static User getUserInstance(){
+		return new User();
+	}
+	
+	public static User getUserInstance(String username,String password){
+		return new User(username,password);
+	}
+}
+
+ <!-- 使用静态工程方法创建对象 --> 
+    <!--factory-method="静态的工程方法" -->
+    <bean id="user2" class="cn.zzsxt.entity.UserFactory" factory-method="getUserInstance"></bean>
+    <!-- 带参数的静态工程方法 -->
+    <bean id="user3" class="cn.zzsxt.entity.UserFactory" factory-method="getUserInstance">
+    	<constructor-arg index="0" value="zhangsan"></constructor-arg>
+    	<constructor-arg index="1" value="123"></constructor-arg>
+    </bean>

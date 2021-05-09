@@ -1,0 +1,6 @@
+1、下载idea从官网上
+2、下载补丁(将补丁放到idea安装的bin目录中)
+3、修改idea.exe.vmoptions和idea64.exe.vmoptions 这两个文件(将jetbrains-agent.jar位置配置到两个文件中)
+4、修改host文件
+5、重启idea 
+6、输入激活码

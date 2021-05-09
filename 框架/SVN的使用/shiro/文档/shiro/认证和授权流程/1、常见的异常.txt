@@ -1,0 +1,11 @@
+1、UnknownAccountException
+账号不存在异常如下：
+org.apache.shiro.authc.UnknownAccountException: No account found for user。。。。
+2、IncorrectCredentialsException
+当输入密码错误会抛此异常，如下：
+org.apache.shiro.authc.IncorrectCredentialsException: Submitted credentials for token [org.apache.shiro.authc.UsernamePasswordToken - zhangsan, rememberMe=false] did not match the expected credentials.
+更多如下：
+3、DisabledAccountException（帐号被禁用）
+4、LockedAccountException（帐号被锁定）
+5、ExcessiveAttemptsException（登录失败次数过多）
+6、ExpiredCredentialsException（凭证过期）等

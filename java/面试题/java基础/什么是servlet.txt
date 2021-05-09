@@ -1,0 +1,3 @@
+什么是Servlet?
+ Servlet是用Java编写的服务端程序，由服务器端调用和执行的Java类。是使用Java Servlet
+应用程序设计接口(API)及相关类和方法来构建的，而Java Servlet API定义了  

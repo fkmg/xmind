@@ -1,0 +1,39 @@
+1、Collection常用的子接口有?
+List<E>,Set<E>, BlockingQueue<E>, Queue<E>
+
+2、超级接口?
+Iterable<E>
+
+3、Collection中常用的方法
+//注:可将set集合中的元素添加到List中
+addAll(Collection<? extends E> c) 将指定 collection 中的所有元素都添加到此 collection 中
+
+contains(Object o) 如果此 collection 包含指定的元素，则返回 true。
+
+//注:set中的元素值若和list中的值相同，则返回true，若存放的是对象则比较的是按equal方法比较
+containsAll(Collection<?> c)如果此 collection 包含指定 collection 中的所有元素，则返回 true。
+
+removeAll(Collection<?> c) 移除此 collection 中那些也包含在指定 collection 中的所有元素（可选操作）。
+
+
+retainAll(Collection<?> c)仅保留此 collection 中那些也包含在指定 collection 的元素（可选操作）。
+
+toArray(T[] a) 返回包含此 collection 中所有元素的数组；返回数组的运行时类型与指定数组的运行时类型相同。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+一、字符串
+1、char(n)：n字节长度
+2、varchar(n)：2字节存储字符串长度，如果是utf-8，则长度 3n+ 2
+二、数值类型
+1、tinyint：1字节
+2、smallint：2字节
+3、int：4字节
+4、bigint：8字节
+三、时间类型
+1、date：3字节
+2、timestamp：4字节
+3、datetime：8字节
+四、如果字段允许为 NULL，需要1字节记录是否为 NULL

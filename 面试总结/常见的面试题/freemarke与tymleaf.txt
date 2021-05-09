@@ -1,0 +1,61 @@
+1、取集合中的数据
+<#list 集合名 as item>
+	
+</#list>
+
+访问索引item_index
+
+2、判断
+<#if item_index % 2 == 0>
+<#else>
+</#if>
+
+3、日期
+${date?date} 2016-9-13
+${date?time} 17:53:55
+${date?datetime} 2016-9-13 17:53:55
+
+
+4、空值
+处理: ${aaa!”默认值”}或者${aaa! }代表空字符串
+
+5、Include标签
+<#include “模板名称”>
+
+
+Thymeleaf语法详解
+1、变量输出与字符串操作th:text/th:value
+2、Thymeleaf 内置对象
+	注意语法：
+	1，调用内置对象一定要用#
+	2，大部分的内置对象都以 s 结尾 strings、numbers、dates
+3、条件判断
+	th:if
+	th:switch
+		th:case
+4、迭代遍历
+	<th:each =“u,var:${list}">
+	ht:each状态变量
+	状态变量属性
+	1,index:当前迭代器的索引 从 0 开始
+	2,count:当前迭代对象的计数 从 1 开始
+	3,size:被迭代对象的长度
+	4,even/odd:布尔值，当前循环是否是偶数/奇数 从 0 开始
+	5,first:布尔值，当前循环的是否是第一条，如果是返回 true 否则返回 false
+	6,last:布尔值，当前循环的是否是最后一条，如果是则返回 true 否则返回 false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

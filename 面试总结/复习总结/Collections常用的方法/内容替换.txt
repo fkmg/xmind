@@ -1,0 +1,15 @@
+static <T> boolean  replaceAll(List<T> list, T oldVal, T newVal)       使用另一个值替换列表中出现的所有某一指定值。 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+public class test1{
+    public static void main(String args[]){
+        List<String> all = new ArrayList<String>() ;    // 返回空的 List集合
+        Collections.addAll(all,"MLDN","LXH","mldnjava") ;
+        if(Collections.replaceAll(all,"LXH","李兴华")){// 替换内容
+            System.out.println("内容替换成功！") ;
+        }
+        System.out.print("替换之后的结果：") ;
+        System.out.print(all) ;
+    }
+};

@@ -1,0 +1,17 @@
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>4.3.4.RELEASE</version>
+</dependency>
+
+<dependency>
+    <groupId>org.apache.shiro</groupId>
+    <artifactId>shiro-all</artifactId>
+    <version>1.2.3</version>
+</dependency>
+
+<dependency>
+    <groupId>commons-logging</groupId>
+    <artifactId>commons-logging</artifactId>
+    <version>1.2</version>
+</dependency>

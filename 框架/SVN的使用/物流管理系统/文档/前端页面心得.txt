@@ -1,0 +1,14 @@
+外部样式的引用方式
+<link rel="stylesheet" rev="stylesheet" type="text/css" href="路径">
+外部jquery的引入方式
+<script type="text/javascript" src="路径"></script>
+
+样式表达的基本语法
+规则选择器 属性 值
+如:p{	color:red;	
+	font-size:30px;	 
+  	font-family:隶书;}
+
+
+选择器分为 1、标签选择器 2、类选择器 3、id选择器
+

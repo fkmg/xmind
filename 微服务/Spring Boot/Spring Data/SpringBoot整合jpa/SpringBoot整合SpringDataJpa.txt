@@ -1,0 +1,253 @@
+﻿SpringBoot整合SpringDataJPA
+
+一、Respository 接口
+Repository接口是Spring Data JPA中为我们提供的所有接口中的顶层接口
+
+1、方法名称命名规则查询
+规则:
+findBy(关键字)+属性名称(属性名称的首字母大写)+查询条件(首字母大写)
+
+关键字			方法名称			sql where字句
+
+And   			findByNameAndPwd		where name = ? and pwd =?
+
+Or			findByNameOrSex 		where name = ? or sex =?
+
+Is,Equal		findById,findByIdEqual		where id =?
+
+Between			findByIdBetween			where id between ? and ?
+
+LessThan		findByIdLessThan		where id <?
+
+LessThanEqual 		findByIdLessThanEqual		where id<=?
+
+GreaterThan		findByIdGreaterThan		where id>?
+
+GreaterThanEqual	findByIdGreaterThanEqual	where id>=?
+
+isNotNull,Not		findByNameNotNull 		where name is not Null
+
+Like			findByNameLike			where name like ?
+
+OrderBy			findByIdOrderByXDesc		where id=? order by x desc
+
+
+2、基于@Query注解的查询
+
+通过JPQL语句查询
+
+JPQL:通过Hibernate 的HQL演变过来的。他和HQL语法及其相似。
+
+1、select 实体别名.属性名,实体别名.属性名 from 实体名 as 实体别名 where 实体别名.实体属性 op比较值
+
+/**
+ * Repository   @Query
+ */
+public interface UsersRepositoryQueryAnnotation extends Repository<Users, Integer> {
+	@Query("from Users where name = ?")
+	List<Users> queryByNameUseJPQL(String name);
+	
+	@Query("from Users where name like ?")
+	List<Users> queryUserByLikeNameUseJPQL(String name);
+	
+	@Query(value="select * from t_users where name = ?",nativeQuery=true)
+	List<Users> queryByNameUseSQL(String name);
+	
+	@Query("update Users set name  = ? where id  = ?")
+	@Modifying //需要执行一个更新操作
+	void updateUsersNameById(String name,Integer id);
+}
+
+CrudRepository接口
+
+public interface UsersCrudRepository extends CrudRepository<Users, Integer> {
+
+}
+
+其查询出来的结果是迭代器，可进行增删改查
+
+三、5.PagingAndSortingRepository接口
+
+public interface UsersRepositoryPagingAndSorting extends PagingAndSortingRepository<Users,Integer> {
+
+}
+
+可以进行排序
+
+
+	/**
+	 * PagingAndSortingRepository   排序测试
+	 */
+	@Test
+	public void testPagingAndSortingRepositorySort() {
+		//Order 定义排序规则
+		Order order = new Order(Direction.DESC,"id");
+		//Sort对象封装了排序规则
+		Sort sort = new Sort(order);
+		List<Users> list = (List<Users>)this.usersRepositoryPagingAndSorting.findAll(sort);
+		for (Users users : list) {
+			System.out.println(users);
+		}
+	}
+
+
+	@Test
+	public void testPagingAndSortingRepositoryPaging() {
+		//Pageable:封装了分页的参数，当前页，每页显示的条数。注意：他的当前页是从0开始。
+		//PageRequest(page,size) page:当前页。size:每页显示的条数
+		Pageable pageable = new PageRequest(1, 2);
+	    Page<Users> page = this.usersRepositoryPagingAndSorting.findAll(pageable);
+		System.out.println("总条数："+page.getTotalElements());
+		System.out.println("总页数"+page.getTotalPages());
+		List<Users> list = page.getContent();
+		for (Users users : list) {
+			System.out.println(users);
+		}
+	}
+
+6.JpaRepository 接口
+JpaRepository 接口是我们开发时使用的最多的接口。其特点是可以帮助我们将其他接口的方法
+的返回值做适配处理。可以使得我们在开发时更方便的使用这些方法。
+
+/**
+ * 参数一 T :当前需要映射的实体
+ * 参数二 ID :当前映射的实体中的OID的类型
+ *
+ */
+public interface UsersRepository extends JpaRepository<Users,Integer>{
+}
+6.2测试类
+/**
+ * 测试类
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = App.class)
+public class UsersJpaRepositoryTest {
+
+	@Autowired
+	private UsersJpaRepository usersJpaRepository;
+	/**
+	 * JapRepository   排序测试
+	 */
+	@Test
+	public void testJpaRepositorySort() {
+		//Order 定义排序规则
+		Order order = new Order(Direction.DESC,"id");
+		//Sort对象封装了排序规则
+		Sort sort = new Sort(order);
+		List<Users> list = this.usersJpaRepository.findAll(sort);
+		for (Users users : list) {
+			System.out.println(users);
+		}
+	}
+}
+
+六、JpaSpecificationExecutor 接口
+
+该接口主要提供了多条件查询的支持，并且可以在查询中添加分页与排序
+注意：JpaSpecificationExecutor接口
+与以上接口没有关系，完全独立。
+:不能单独使用，需要配合着 jpa 中的其他接口一起使用
+
+7.1创建接口
+/**
+ * 
+ *JpaSpecificationExecutor
+ *
+ */
+public interface UsersSpecificationRepository extends JpaRepository<Users, Integer>, JpaSpecificationExecutor<Users> {
+
+}
+
+7.2单条件测试
+/**
+ * 测试类
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = App.class)
+public class UsersRepositorySpecificationTest {
+
+	@Autowired
+	private UsersRepositorySpecification usersRepositorySpecification;
+	
+	/**
+	 * JpaSpecificationExecutor   单条件测试
+	 */
+	@Test
+	public void testJpaSpecificationExecutor1() {
+		
+		/**
+		 * Specification<Users>:用于封装查询条件
+		 */
+		Specification<Users> spec = new Specification<Users>() {
+			
+			//Predicate:封装了 单个的查询条件
+			/**
+			 * Root<Users> root:查询对象的属性的封装。
+			 * CriteriaQuery<?> query：封装了我们要执行的查询中的各个部分的信息，select  from order by
+			 * CriteriaBuilder cb:查询条件的构造器。定义不同的查询条件
+			 */
+			@Override
+			public Predicate toPredicate(Root<Users> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				// where name = '张三三'
+				/**
+				 * 参数一：查询的条件属性
+				 * 参数二：条件的值
+				 */
+				Predicate pre = cb.equal(root.get("name"), "张三三");
+				return pre;
+			}
+		};
+		List<Users> list = this.usersRepositorySpecification.findAll(spec);
+		for (Users users : list) {
+			System.out.println(users);
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

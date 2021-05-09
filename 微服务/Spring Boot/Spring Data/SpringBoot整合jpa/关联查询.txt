@@ -1,0 +1,72 @@
+实体bean的注解
+			@Entity(name="xx"),@Table(name="tb_xx")
+	属性的注解
+			@Id  @Column(name = "role_id")  
+			@GeneratedValue(strategy=GenerationType.IDENTITY)
+	主键的生成策略:
+			1、native(常用值)
+			对于orcal采用Sequence方式,对于MySQL和SQL Server采用indentity(主键自增生成机制)
+			，native就是将主键的生成工作交由数据库完成，会根据底层数据库的能力，从identity,sequence
+			,hilo中选择一个，灵活性强
+			2、assigned(很常用)
+			在插入数据的时候主键由用户自己添加，hibernate不管
+			3、identity
+			4、uuid
+一、一对一查询
+	
+	一方: Users
+			//级联的方式
+			@OneToOne(cascade = CascadeType.MERGE)
+			@JoinColum(name="roleId")
+			private Rolses roles;
+			
+	一方: Rolses
+			
+			//关系交由rolses管理相当于xml配置中的inverse
+			@OneToOne(mappedBy="roles")
+			private Users users;
+			
+二、一对多
+		
+	一方:	Users
+			
+			@JoinColumn(name = "roleId")
+			@ManyToOne(cascade = CascadeType.MERGE)
+			private Rolse rolse;
+			
+	多方:	Rolse
+			
+			@OneToMany(mappedBy = "rolse",fetch = FetchType.LAZY)//mappedBy相当于inverse的作用将管理交给一方
+			private Set<User> user;
+			
+		
+
+
+三、多对多
+		
+		多方:	Rolses
+		@ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+		@JoinTable(name = "tb_roles_menus",joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "menus_id"))
+		private Set<Menus> menus = new HashSet<Menus>();
+		
+		中间表:	tb_roles_menus
+		
+		
+		多方:	Menus
+		//将关系的操作交给对方操作
+		@ManyToMany(mappedBy = "menus")
+		private Set<Rolse> rolses = new HashSet<Rolse>();
+			
+	补充:	级联的方式
+		
+		
+		1、CascadeType.REFRESH	级联刷新 : 	当多个用户同时操作一个实体,为了获取到的数据
+		都是数据库中最新的数据，在用实体中的数据之前可以调用refresh()方法
+		2、CascadeType.MERGE 级联更新 :	指A类新增或者变化，会级联B对象(新增或者变化)
+		3、CascadeType.REMOVE只有A类删除时，会级联删除B类
+		4、CascadeType.PERSIST只有A类新增时，会级联B对象新增。若B对象在数据库存(跟新)在则抛异常(让B变为持久态)
+		异常
+		Caused by: org.hibernate.PersistentObjectException: detached entity passed to persist: com.sxt.pojo.Rolse
+		
+		

@@ -1,0 +1,12 @@
+2. 潜在的线程安全问题
+
+上面提到Collections为HashMap提供了一个并发版本SynchronizedMap。这个版本中的方法都进行了同步，但是这并不等于这个类就一定是线程安全的。在某些时候会出现一些意想不到的结果。
+
+如下面这段代码：
+
+Java代码
+// shm是SynchronizedMap的一个实例   
+if(shm.containsKey('key')){   
+        shm.remove(key);   
+}  
+ 这段代码用于从map中删除一个元素之前判断是否存在这个元素。这里的containsKey和reomve方法都是同步的，但是整段代码却不是。考虑这么一个使用场景：线程A执行了containsKey方法返回true，准备执行remove操作；这时另一个线程B开始执行，同样执行了containsKey方法返回true，并接着执行了remove操作；然后线程A接着执行remove操作时发现此时已经没有这个元素了。要保证这段代码按我们的意愿工作，一个办法就是对这段代码进行同步控制，但是这么做付出的代价太大。

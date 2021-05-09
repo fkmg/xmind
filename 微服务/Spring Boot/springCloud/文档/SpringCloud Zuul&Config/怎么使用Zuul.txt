@@ -1,0 +1,40 @@
+﻿一、springcloud-eureka--zuul-gateway
+	1、需要的依赖 :web,eureka,zuul启动器
+	2、yml配置
+		端口号、服务的名字、注册的地址
+		#/apiuser/开头的url请求，将转发到eureka-provider这个微服务上
+		zuul.routes.apiuser.path=/apiuser/**
+		zuul.routes.apiuser.serviceId=eureka-provider
+		#忽略的服务,多个可以用*
+		#zuul.ignored-services=eureka-provider
+		zuul.ignored-services=*
+	3、启动类上
+		@SpringBootApplication
+		@EnableEurekaClient
+		@EnableZuulProxy
+	
+	**********AccessFilter的用法****************
+	
+	1、配置和上相同
+	2、创建config包
+		类一: AccessFilter extends ZuulFilter
+			需重写的方法:
+				1、filterType() 处理过滤的类型 "pre"
+				2、filterOrder() 排序 0
+				3、shouldFilter() 是否拦截 true
+				4、run()
+					常用的方法:
+						RequestContext requestContext = RequestContext.getCurrentContext();
+						//2、获取请求和相应
+						HttpServletRequest request = requestContext.getRequest();
+						HttpServletResponse response = requestContext.getResponse();
+
+	
+	filterType：返回一个字符串代表过滤器的类型，在zuul中定义了四种不同生命周期的过滤器类型，具体如下：
+
+	pre：可以在请求被路由之前调用
+	route：在路由请求时候被调用
+	post：在route和error过滤器之后被调用
+	error：处理请求时发生错误时被调用
+					
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

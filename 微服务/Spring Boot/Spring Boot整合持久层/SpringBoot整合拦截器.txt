@@ -1,0 +1,113 @@
+
+//拦截器
+package com.sxt.interceptor;
+
+import com.sxt.pojo.User;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Created by Lenovo on 2019/7/5.
+ */
+public class LoginInterceptors implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        //1、首先从session中qu取用户的信息判断用户是否登陆
+        User uu = (User)request.getSession().getAttribute("user");
+        if(uu!=null){
+            //放行
+            System.out.println("yy I want to tell something");
+            return true;
+        }
+        //将请求冲向到登陆
+        response.sendRedirect("/");
+      return false;
+    }
+    //在交给视图解析器之前拦截
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+    }
+    //视图解析器调用之后
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+
+    }
+}
+
+//时间转换器
+
+package com.sxt.converter;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.core.convert.converter.Converter;
+
+import java.text.ParseException;
+import java.util.Date;
+
+/**
+ * Created by Lenovo on 2019/7/5.
+ */
+public class DateConverter implements Converter<String, Date> {
+
+    @Override
+    public Date convert(String s) {
+        if (StringUtils.isNotBlank(s)) {
+            String[] pattern = new String[]{"yyyy-MM", "yyyyMMddHHmmss", "yyyyMMdd", "yyyyMM", "yyyy/MM", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm", "yyyy-MM-dd'T'HH:mm:ss", "yyyy/MM/dd HH:mm:ss",
+                    "yyyy-MM-dd", "yyyy/MM/dd", "yyyy年MM月dd日 HH时mm分ss秒", "yyyy年MM月dd日"};
+            try {
+                Date date = DateUtils.parseDate(s, pattern);
+                return date;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+}
+
+
+package com.sxt.interceptor;
+
+import com.sxt.pojo.User;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Created by Lenovo on 2019/7/5.
+ */
+public class LoginInterceptors implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        //1、首先从session中qu取用户的信息判断用户是否登陆
+        User uu = (User)request.getSession().getAttribute("user");
+        if(uu!=null){
+            //放行
+            System.out.println("yy I want to tell something");
+            return true;
+        }
+        //将请求冲向到登陆
+        response.sendRedirect("/");
+      return false;
+    }
+    //在交给视图解析器之前拦截
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+    }
+    //视图解析器调用之后
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+
+    }
+}
+

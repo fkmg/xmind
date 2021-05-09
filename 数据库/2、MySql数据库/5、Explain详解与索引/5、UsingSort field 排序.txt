@@ -1,0 +1,12 @@
+Using filesort文件排序原理详解
+filesort文件排序方式
+单路排序：是一次性取出满足条件行的所有字段，然后在sort buffer中进行排序；用trace工具可
+以看到sort_mode信息里显示< sort_key, additional_fields >或者< sort_key,
+packed_additional_fields >
+双路排序（又叫回表排序模式）：是首先根据相应的条件取出相应的排序字段和可以直接定位行
+数据的行 ID，然后在 sort buffer 中进行排序，排序完后需要再次取回其它需要的字段；用trace工具
+可以看到sort_mode信息里显示< sort_key, rowid >
+MySQL 通过比较系统变量 max_length_for_sort_data(默认1024字节) 的大小和需要查询的字段总大小来
+判断使用哪种排序模式。
+如果 字段的总长度小于max_length_for_sort_data ，那么使用 单路排序模式；
+如果 字段的总长度大于max_length_for_sort_data ，那么使用 双路排序模∙式。

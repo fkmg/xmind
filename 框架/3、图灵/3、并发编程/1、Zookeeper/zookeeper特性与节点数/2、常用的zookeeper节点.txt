@@ -1,0 +1,12 @@
+1、PERSISTENT­持久化目录节点
+客户端与zookeeper断开连接后，该节点依旧存在，只要不手动删除该节点，他将永远存在
+2、 PERSISTENT_SEQUENTIAL­持久化顺序编号目录节点
+客户端与zookeeper断开连接后，该节点依旧存在，只是Zookeeper给该节点名称进行顺序编号
+3、EPHEMERAL­临时目录节点
+客户端与zookeeper断开连接后，该节点被删除(注:临时节点超时亦会删除该节点)
+4、EPHEMERAL_SEQUENTIAL­临时顺序编号目录节点
+客户端与zookeeper断开连接后，该节点被删除，只是Zookeeper给该节点名称进行顺序编号
+5. Container 节点（3.5.3 版本新增，如果Container节点下面没有子节点，则Container节点
+在未来会被Zookeeper自动清除,定时任务默认60s 检查一次）
+6. TTL 节点( 默认禁用，只能通过系统配置 zookeeper.extendedTypesEnabled=true 开启，不稳
+定)

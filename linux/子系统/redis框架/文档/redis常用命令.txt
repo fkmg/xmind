@@ -1,0 +1,215 @@
+﻿一、String类型
+1、赋值 set key value
+2、取值 get key
+3、设置/获取多个键值
+语法:
+	MSET key value[key value...]
+	MGET key [key...]
+4、删除
+	DEL key
+
+5、数值增减
+	递增数字：当存储的字符串是整数时，Redis提供了一个实用的命令INCR，
+其作用是让当前键值递增，并返回递增后的值。
+语法:
+	增：INCR key 
+	减: DECR key
+	制定增长的步长
+	INCRBY key increment 例如：incrby num 2
+	DECRBY key decrement
+5、向尾部追加值
+APPEND的作用是向键值的末尾追加value。如果键不存在则将该键的值设置为value，
+即相当于SET key value。返回值是追加后字符串的总长度。
+
+语法:APPEND key value
+
+6、获取字符串长度
+
+STRLEN key
+
+
+-----------------------------------------------------------
+
+二、Hash类型
+
+1、赋值
+
+一次只能设置一个字段值
+HSET key field value
+一次可设置多个字段的值
+HMSET key field value [field value...]
+
+2、取值
+
+一次只能获取一个值
+HGET key field
+一次能获取多个字段值
+HMGET key field [field...]
+获取所有字段的值
+hgetall key
+
+3、删除字段
+可以删除一个或多个字段，返回值是被删储到字段的个数
+HDEL key field [field...]
+
+4、增加数字
+
+hincrby key field increment
+
+5、判断字段是否存在
+
+HEXISTS key field 
+
+6、只获取字段名或字段值
+
+HKEYS key
+HVSLS key
+
+7、获取属性的数量
+hlen key
+
+
+-----------------------------------------------------------
+三、List类型
+
+1、向列表两端增加元素
+
+向列表左边增加元素
+
+lpush key value [value...]
+
+向列表的右边增加元素
+
+lpush key value [value...]
+
+2、查看列表
+
+LRANGE key start stop
+
+APPEND的作用是向键值的末尾追加value。如果键不存在则将该键的值设置为value，
+
+即相当于SET key value。返回值是追加后字符串的总长度。
+
+
+3、从列表两端弹出元素
+
+LPOP命令从列表左边弹出一个元素结果返回这个值
+
+RPOP
+
+4、获取列表中元素的个数
+
+LLEN key
+
+5、
+获得制定索引的元素值
+
+LINDEX key index
+
+设定制定索引的元素值
+
+lset key index value
+
+6、
+
+向列表中插入元素
+
+该命令首先会在列表中从左到右查找值为pivot的元素，然后根据第二个参数是
+
+BEFORE还是AFTER来决定将value插入到该元素的前面还是后面。
+
+语法：LINSERT key BEFORE|AFTER pivot value
+
+7、将元素从一个列表转移到另一个列表中
+
+语法：RPOP|LPUSH source destination
+
+-----------------------------------------------------------
+
+四、Set类型
+
+1、增加/删除元素
+ 
+sadd key member[member...] 增加
+
+SREM key member [member ...]/删除
+
+2、获得集合中所有的元素
+
+smembers key
+
+3、判断元素是否在集合中
+
+sismember key member
+
+*****运算命令
+
+1、差  语法：SDIFF key [key ...]
+
+2、交 语法：SINTER key [key ...]
+
+3、并 语法：SUNION key [key ...]
+
++++++++其他命令
+
+1、获得集合元素的个数
+
+SCARD key
+
+2、从集合中弹出一个元素
+
+SPOP key
+
+
+------------------------------------------------------
+
+
+五、zset类
+
+1、增加元素
+
+向有序集合中加入一个元素和该元素的分数，如果该元素已经存在则会用新的分数替换原有的分数。
+
+返回值是新加入到集合中的元素个数，不包含之前已经存在的元素。
+
+语法：ZADD key score member [score member ...]
+
+
+2、获取元素的分数
+
+语法：ZSCORE key member
+
+
+3、删除元素
+
+移除有序集key中的一个或多个成员，不存在的成员将被忽略。
+
+当key存在但不是有序集类型时，返回一个错误。
+
+语法：ZREM key member [member ...] 
+
+
+4、获得排名在某个范围的元素列表
+
+(1)按照元素分数从小到大的顺序返回索引从start到stop之间的所有元素（包含两端的元素）
+
+语法：ZRANGE key start stop [WITHSCORES]	
+
+(2)  按照元素分数从大到小的顺序返回索引从start到stop之间的所有元素（包含两端的元素）
+
+语法：ZREVRANGE key start stop [WITHSCORES]	
+
+
+
+5、获取制定分数范围的元素
+
+语法：ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
+
+
+6、增加某个元素的分数
+
+ZINCRBY  key increment【要增加的分数】 member
+
+7、获得集合中元素的数量
+
+ZCARD scoreboard 

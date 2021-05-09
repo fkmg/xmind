@@ -1,0 +1,138 @@
+一、Solr的文件夹结构
+bin	solr的运行脚本
+contrib	solr的一些软件/插件，用于增强solr的功能。
+dist 包含build过程中产生的war和jar文件，以及相关的依赖文件
+docs	solr的API文档
+example		solr工程的例子目录
+licenses	solr相关的一些许可信息
+
+二、solr整合tomcat
+1)把solr的war包复制到tomcat 的webapp目录下，解压之后删除solr.war
+2)给solr添加日志jar包(example\lib\ext)
+3)配置solrHome和solrCore：
+4)告诉服务器solrHome的位置：修改tomcat 的webapp目录下solr的web.xml配置文件
+5)启动tomcat，访问http://localhost:8080/solr/
+
+说明：
+默认实例叫做collection1
+conf是SolrCore的配置文件目录 。
+data目录存放索引文件
+
+三、solr后台管理
+1、Dashboard
+仪表盘，显示了该Solr实例开始启动运行的时间、版本、系统资源、jvm等信息
+2、Logging
+Solr运行日志信息
+3、Core Admin
+Solr Core的管理界面。Solr Core 是Solr的一个独立运行实例单位，它可以对外提供索引和搜索服务，一个Solr工程可以运行多个SolrCore（Solr实例），一个Core对应一个索引目录。
+
+添加solrcore：
+第一步：复制collection1改名为collection2
+第二步：修改core.properties。name=collection2
+第三步：重启tomcat
+4、java properties
+Solr在JVM 运行环境中的属性信息，包括类路径、文件编码、jvm内存设置等信息。
+
+5、Tread Dump
+显示Solr Server中当前活跃线程信息，同时也可以跟踪线程运行栈信息。
+6、Core selector
+
+6.1、Analysis
+通过此界面可以测试索引分析器和搜索分析器的执行情况
+6.2、Dataimport
+可以定义数据导入处理器，从关系数据库将数据导入 到Solr索引库中。
+6.3、Documents
+通过此菜单可以创建索引、更新索引、删除索引等操作
+6.4、Query
+
+补充:solr的field数据类型
+1、普通域
+2、动态域
+3、主键域
+4、复制域 string text long 
+
+3.8查询索引(重点)
+
+1、q - 查询字符串，必须的，如果查询所有使用*:*
+2、fq - （filter query）过虑查询，作用：在q查询符合结果中同时是fq查询符合的
+
+
+
+
+比如搜索商铺列表时需要根据销量、距离、商铺入驻时间对搜索结果集进行排序，优先级分别是：
+
+销量>距离>商铺入驻时间，则排序语法为：
+
+sort=soldNum desc,geodist() asc,createTime desc
+
+如上，优先级高的排前面。
+
+代码：
+
+SolrQuery solrQuery=new SolrQuery();
+solrQuery.addSort("soldNum",ORDER.desc);
+solrQuery.addSort("geodist()",ORDER.asc);
+solrQuery.addSort("createTime",ORDER.desc);
+
+
+
+*************************查询********************************
+
+1、通配符查询
+
+星号通配符（*）表示匹配 0 个或多个字符。如果你只需要匹配一个字符，那么可以使用问号（?）通配符
+
+在 Solr 中使用通配符相当强大。但是，使用通配符进行查询也会带来很大的开销。一旦使用统配符的查询，那么在关键字中第一个通配符之前的部分需要在反向索引中全部查询出来。那后，每个查询出来的结果在逐一进行检查，看是否符合查询条件。正是因为这样，所以在统配符之前的字符越多，那么查询将会越快。例如，使用 engineer*  进行查询将不会带来很高的开销（因为这个查询在反向索引中不会找到太多的匹配），但是 e* 进行查询的开销就相当大，它将会匹配所有 e 开头的单词。
+
+如果使用通配符开头的话，开销也会相当大。例如，你需要查询 ing 结尾的单词（像 caring，liking 和 smiling），那么将会带来严重的性能问题：
+
+查询语句： *ing
+如果你真的需要进行这样的查询，那么有一个现成的解决方案，这个解决方案就是添加 ReversedWildcardFilterFactory 到你的字段类型的分析链中（详细内容以后会讲到）。
+
+ReversedWildcardFilterFactory 将会插入两条记录到 Solr 的索引中（一条是单词的正向文本内容，一条是单词的反向文本内容）：
+
+
+***范围查询使用TO
+闭区间[
+开区间{
+
+
+
+模糊/编辑距离查询
+对于很多搜索应用来说，很重要的功能是不仅仅需要精确匹配用户的文本内容。而且还允许一些灵活的变化，比如一些用户的拼写错误或相同单词的其它变体。Solr 通过基于 Damerau-Levenshtein 距离的编辑距离测量来支持这个功能，它将容忍 80% 以上的拼写错误。
+
+Solr 提供的模糊编辑距离查询需要用到波浪符号（~）：
+
+查询语句： administrator~ 匹配： adminstrator， administrater， administratior，等
+这个查询不仅匹配原始的关键字（administrator），还有其它与原始关键字有 2 个编辑距离的关键字。一个编辑距离表示增加，删除，取代或交换一个任意字符。关键字 adminstrator （在第六个字母出少了字符“i”）和原始关键字之间相差一个编辑距离，因为它删除了一个字符。同样 sadministrator 和原始关键字之间也是相差一个编辑距离，因为它在前面添加了一个字符。administratro 也与原始关键字有一个编辑距离，因为它将最后两个字符交换了顺序。
+
+在编辑距离查询中也可以精确指定编辑距离：
+
+查询语句：administrator~1 匹配一个编辑距离以内的内容。
+查询语句：administrator~2 匹配两个编辑距离以内的内容（如果没有提供编辑距离的话，这个就是默认值）。
+查询语句：administrator~N 匹配 N 个编辑距离以内的内容。
+注意，任何编辑距离大于 2 的查询将会使查询速度变得很慢。如果编辑距离在 2 以内，那么将会使用很高效率的 Levenshtein 自动机（Levenshtein automaton），但是如果编辑距离大于 2，将会退回到更慢的编辑距离实现。
+
+
+
+————————————————
+版权声明：本文为CSDN博主「代码菜鸟旺仔」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_22929803/article/details/46924487
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

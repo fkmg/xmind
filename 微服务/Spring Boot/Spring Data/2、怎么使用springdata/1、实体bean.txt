@@ -1,0 +1,37 @@
+一、实体类中注解
+1、@Entity//表示当前类是和表对应的实体bean
+2、@Table(name="t_users")//对应的表名
+
+二、属性名注解
+
+@Id//主键
+1、主键自增测略,Orcel不适用
+	@GeneratedValue(strategy=GenerationType.IDENTITY)// strategy:策略 Generation:产生主键生成策略
+	@Column(name="id")//列名
+	
+2、@SequenceGenerator定义：
+@Target({TYPE, METHOD, FIELD})   
+@Retention(RUNTIME)  
+public @interface SequenceGenerator {  
+ String name();  
+ String sequenceName() default "";  
+ int initialValue() default 0;  
+ int allocationSize() default 50;  
+}  
+
+
+以上属性说明如下： 
+
+name 属性表示该表主键生成策略的名称，它被引用在@GeneratedValue中设置的“generator”值中。 
+
+sequenceName 属性表示生成策略用到的数据库序列名称；
+
+initialValue 表示主键初识值，默认为0；
+
+allocationSize 表示每次主键值增加的大小。例如设置成1，则表示每次创建新记录后自动加1，默认为50；
+
+
+3、uuid
+@Id
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")

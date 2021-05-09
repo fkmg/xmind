@@ -1,0 +1,8 @@
+1、构建SecurityManager工厂，IniSecurityManagerFactory可以从ini文件中初始化SecurityManager环境
+2、通过工厂创建SecurityManager
+3、使用SecurityUtils将securityManager设置到运行环境中
+4、使用SecurityUtils创建一个Subject实例，该实例认证要使用上边创建的securityManager进行
+5、创建token令牌，记录用户认证的身份和凭证即账号和密码
+6、用户登录
+7、查看认证状态
+8、退出登录

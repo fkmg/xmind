@@ -1,0 +1,6 @@
+Servlet是sun公司提供的一门用于开发动态web资源的技术。
+Sun公司在其API中提供了一个servlet接口，用户若想用发一个动态web资源(即开发一个Java程序向浏览器输出数据)，需要完成以下2个步骤：
+1、编写一个Java类，实现servlet接口。
+2、把开发好的Java类部署到web服务器中。
+按照一种约定俗成的称呼习惯，通常我们也把实现了servlet接口的java程序，称之为Servlet
+

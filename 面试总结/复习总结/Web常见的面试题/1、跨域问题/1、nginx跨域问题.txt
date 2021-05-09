@@ -1,0 +1,4 @@
+www.baidu.com/index.html需要调用www.sina.com/server.php，可以写一个接口www.baidu.com/server.php，由这个接口在后端去调用www.sina.com/server.php并拿到返回值，然后再返回给index.html
+————————————————
+版权声明：本文为CSDN博主「飞扬_柳絮」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/tjcjava/article/details/76468225

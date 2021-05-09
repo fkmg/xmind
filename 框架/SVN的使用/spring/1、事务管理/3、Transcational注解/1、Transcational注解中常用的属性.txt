@@ -1,0 +1,45 @@
+属性名							类型								说明
+
+isolation						枚举类型 						事务隔离级别
+								org.springframework.transaction.
+								annotation.isolation的值		
+
+noRollbackFor					Class<? extends Throwable>[]    一组异常类，
+																遇到时不回滚
+																
+noRollbackForClassName   		String[]						一组异常名
+
+propagation						枚举
+								org.springframework.transaction  传播行为
+								.annotation.Propagation的值
+
+readOnly						boolean							读写性
+
+rollbackFor						Class<? extends Throwable>[]    遇到回滚
+
+rollbackForClassName
+
+timeout							int								超时时间
+
+value					      String							制定事务管
+																理器
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

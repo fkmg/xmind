@@ -1,0 +1,46 @@
+1、怎么声明变量
+DELCARE 变量名 类型;
+
+2、声明的变量怎么在过程中进行调用呢
+可直接使用select 变量名(+\-\*\/)操作 INTO 被赋值的变量
+
+3、赋值语句
+set 变量名(使用DELCARE声明的变量)=值
+
+3、if语句
+IF 变量名 THEN
+	操作;
+ELSEIF 变量名 THEN
+	操作;
+ELSE
+	操作;
+END IF;
+
+4、While循环
+WHILE 变量名 DO
+	操作;
+END WHILE;
+
+
+5、删除操作
+DROP PROCEDURE 过程名;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

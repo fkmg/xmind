@@ -1,0 +1,47 @@
+
+#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+ 
+    keepalive_timeout  65;
+
+    #gzip  on;
+	
+    upstream server_list{
+	#配置tomcat的位置及端口号
+	server 192.168.1.50:8080;#可以给每个配置加权重weight=5;
+	server 192.168.1.50:8090;#weight=5;
+    }
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        location / {
+           proxy_pass http://server_list;
+	   proxy_set_header Host $host;
+        }
+
+	location ~* \.(jpg|peg|jpeg|js|css)$ {
+           root /usr/upload;
+	   proxy_set_header Host $host;
+        }
+    }
+}

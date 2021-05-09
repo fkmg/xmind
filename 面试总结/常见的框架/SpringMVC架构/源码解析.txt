@@ -1,0 +1,40 @@
+1、DispathcerSer
+	作为springmvc的中央调度器存在，DispatcherServlet创建时会默认从DispatcherServlet.properties
+文件加载springmvc所用的各各组件
+
+2、HandlerMapping处理器映射器
+HandlerMapping负责根据request请求找到对应的Hanler处理器及Interceptor拦截器，将它们封装在
+HandlerExecutionChain对象中前端控制器返回
+
+3、BeanNameUrlHandlerMapping
+	BeanNameUrl处理器映射器，根据请求的url与spring容器中定义的bean的name经行匹配，从而从spring
+	容器中找到bean实例
+	
+4、SimpleUrlHandlerMapping
+
+simpleUrlHanlerMapping是BeanNameUrlHandlerMapping的增强版本，它可以将url和处理器bean的id进行
+统一映射配置
+
+5、处理器映射器HandlerAdapter
+HandlerAdapter会根据适配器接口对后端控制器进行包装(适配),包装后即可对处理器进行执行，通过扩展处理
+器适配器可以执行多种类型的处理器，
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

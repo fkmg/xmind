@@ -1,0 +1,4 @@
+一、过滤Web请求
+	
+	1、Spring Security借助一系列Servlet Filter来提供各种安全性功能
+	2、DelegatingFilterProxy是一个特殊的Servlet Filter，它本身所做 的工作并不多。只是将工作委托给一个javax.servlet.Filter实 现类，这个实现类作为一个<bean>注册在Spring应用的上下文中

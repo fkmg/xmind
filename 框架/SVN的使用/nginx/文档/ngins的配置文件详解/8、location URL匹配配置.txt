@@ -1,0 +1,31 @@
+location URL匹配配置
+1、URL地址匹配是进行Nginx配置中最灵活的部分。 location支持正则表达式匹配，也支持条件判断匹配，
+用户可以通过location指令实现Nginx对动、静态网页进行过滤处理。使用location URL匹配配置还可以
+实现反向代理，用于实现PHP动态解析或者负载负载均衡。
+
+2、以下这段设置是通过location指令来对网页URL进行分析处理，所有扩展名以
+.gif、.jpg、.jpeg、.png、.bmp、.swf结尾的静态文件都交给nginx处理，
+而expires用来指定静态文件的过期时间，这里是30天。
+
+location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ {
+root /wwwroot/www.cszhi.com;
+expires 30d;
+}
+
+3、以下这段设置是将upload和html下的所有文件都交给nginx来处理，当然，upload和html目录包含在
+/web/wwwroot/www.cszhi.com目录中。
+
+location ~ ^/(upload|html)/ {
+root /web/wwwroot/www.cszhi.com;
+expires 30d;
+}
+
+*************************************
+
+4、在最后这段设置中，location是对此虚拟主机下动态网页的过滤处理，也就是将所有以.jsp为后缀的
+文件都交给本机的8080端口处理。
+
+location ~ .*.php$ {
+index index.php;
+proxy_pass http://localhost:8080;
+}

@@ -1,0 +1,92 @@
+常用对象1
+  1、Date日期对象
+	//本月中的第几天
+	document.write(date.getDate())
+	//本星期的第几天
+	date.getDay();
+	//月份0-11
+	date.getMonth();
+	//返回与1900年的年份差值
+	date.getYear();
+	//返回全年
+	date.getFullYear();
+	//返回本地时间	
+	date.toLocaleString()
+  2、Math对象
+	获取随机数
+	//随机数范围是0-1
+	var ran = Math.random()*1000;
+	console.log(ran);
+	//向下取整 756.9714434215177  ==756
+	console.log(Math.floor(ran));
+	//向上取整  398.06376470341377==398
+	console.log(Math.ceil(ran));
+	//获得4位随机数--验证码
+	console.log(Math.floor(Math.random()*9000+1000) );
+
+  3、String对象学习
+	var  b=new  String("bjsxt");
+	//获得下标为2的内容 位置是从零开始；
+	document.write(b.charAt(2)+"<br />");
+	//2  :获得下标
+	document.write(b.indexOf("sxt")+"<br />");
+	//字符串截取  开始下标  截取长度
+	document.write(b.substr(2,3)+"<br />");
+	//  截取开始的长度
+	document.write(b.substr(1)+"<br />");
+	//字符串截取    开始下标   结束的下标
+	document.write(b.substring(2,3)+"<br />");
+	//开始下标
+	document.write(b.substr(2)+"<br />");
+	//字符串截取的方法
+	document.write(a.split("-")); 
+
+Global对象
+	var a=1;
+	var b="var c=1+1";
+	//把字符串转换成可以执行的js的代码
+	eval(b);
+	document.write(c);
+	var d = "123a";
+	//判断某个值是否是数字
+	isNaN(d);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

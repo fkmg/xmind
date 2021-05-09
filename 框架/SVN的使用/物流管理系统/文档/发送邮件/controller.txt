@@ -1,0 +1,59 @@
+public class UserController{
+
+    @Value("${mail.from}")
+    private String mailFrom;
+    @Autowired
+    private JavaMailSender sender;
+
+    @RequestMapping("sysadmin/userAction_insert")
+    public String create(UserP user, UserInfoP userInfo, String email) throws Exception {
+        // 填充数据 保证数据的完整性
+        UserP u = (UserP) SecurityUtils.getSubject().getPrincipal();
+        user.setCreateBy(u.getUserId());
+        user.setCreateTime(new Date());
+        user.setCreateDept(u.getDeptId());
+        user.setUpdateBy(u.getUserId());
+        user.setUpdateTime(new Date());
+        userInfo.setCreateBy(u.getUserId());
+        userInfo.setCreateTime(new Date());
+        userInfo.setCreateDept(u.getDeptId());
+        userInfo.setUpdateBy(u.getUserId());
+        userInfo.setUpdateTime(new Date());
+        // 一对一 共用id设计模式
+        String id = UUID.randomUUID().toString().replace("-", "");
+        user.setUserId(id);
+        userInfo.setUserInfoId(id);
+        // 密码写死 123456
+        user.setPassword(new Md5Hash("123456", ByteSource.Util.bytes(user.getUserName() + user.getUserId()), 1).toString());
+        service.addUser(user, userInfo);
+        // 开启多线程 发送邮件
+        // 匿名内部类方式的多线程使用
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // 发邮件的业务
+                    MimeMessage message = sender.createMimeMessage();
+                    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                    helper.setFrom(mailFrom);
+                    helper.setTo(email);
+                    helper.setSubject("你好"+user.getUserName());
+                    helper.setText("<html><head></head><body><h1>显示图片</h1><img src=cid:image  />你的默认密码是:123456</body></html>", true);
+                    // 发送图片
+                    FileSystemResource resource = new FileSystemResource(new File("c:/1.jpg"));
+                    helper.addInline("image ", resource);
+                    //发送附件
+                    FileSystemResource zipResource = new FileSystemResource(new File("C:/1.rar"));
+                    helper.addAttachment("abc.rar", zipResource);
+                    sender.send(message);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        return "redirect:/sysadmin/userAction_list";
+    }
+
+}

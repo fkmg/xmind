@@ -1,0 +1,35 @@
+<1、@LoadBalanced原理
+1、假设有一个接口UserService，该接口有两个实现类，分别为AUserServiceImpl，BUserServiceImpl
+2、那么在controller中依赖注入的时候，如果用@Autowired注解注入，则势必会报错,就像下面一样
+
+@Autowired
+private UserService userService;
+
+因为@Autowired是按Bean的类型装配，而此时有两个UserService类型的Bean，则注入的时候spring不知道你到底想要注入哪个Bean，索性直接报错了
+
+方法一：
+
+采用@Resource注解，如下所示：
+
+@Resource
+private  UserService AUserServiceImpl;
+
+方法二：
+
+采用List类型，如下所示
+
+@Autowired
+private  List<UserService> userServiceList;
+
+方法三：
+
+采用@Qualifier注解。Qualifier是合格者的意思，表示为多个实现类选一个合格者注入，如下所示
+@Autowired
+@Qualifier("AUserServiceImpl")
+private  UserService userService;
+
+
+<2、spring扩展点当实体类被实例化后调用
+public interface SmartInitializingSingleton {
+    void afterSingletonsInstantiated();
+}

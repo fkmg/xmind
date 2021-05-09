@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+	<!--ego为逻辑数据库-->
+	<schema name="ego" checkSQLschema="false" sqlMaxLimit="100">
+		<!-- auto sharding by id (long) -->
+		<!--tb_item为逻辑数据表-->   <!--dataNode相当于大仓库且大仓库的名字须与下面的dataNode name名字保持一致-->
+		<!--<table name="tb_item" dataNode="dn1,dn2,dn3" rule="auto-sharding-long" />-->
+		
+		<table name="tb_content" dataNode="dn1,dn2,dn3" rule="crc32slot" />
+		<table name="tb_content_category" dataNode="dn1,dn2,dn3" rule="crc32slot1"/>
+		<table name="tb_item" dataNode="dn1,dn2,dn3" rule="crc32slot2" />
+		<table name="tb_item_cat" dataNode="dn1,dn2,dn3" rule="crc32slot3" />
+		<table name="tb_item_desc" dataNode="dn1,dn2,dn3" rule="crc32slot4"  />
+		<table name="tb_item_param" dataNode="dn1,dn2,dn3" rule="crc32slot5"  />
+		<table name="tb_item_param_item" dataNode="dn1,dn2,dn3" rule="crc32slot6" />
+		<table name="tb_order" dataNode="dn1,dn2,dn3" rule="crc32slot7" />
+		<table name="tb_order_item" dataNode="dn1,dn2,dn3" rule="crc32slot8" />
+		<table name="tb_order_shipping" dataNode="dn1,dn2,dn3" rule="crc32slot9" />
+		<table name="tb_user" dataNode="dn1,dn2,dn3" rule="crc32slot10" />
+	</schema>
+	
+	<dataNode name="dn1" dataHost="localhost1" database="db1" />
+	<dataNode name="dn2" dataHost="localhost1" database="db2" />
+	<dataNode name="dn3" dataHost="localhost1" database="db3" />
+	
+	<dataHost name="localhost1" maxCon="1000" minCon="10" balance="0"
+			  writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
+		<heartbeat>select user()</heartbeat>
+		<!-- can have multi write hosts -->
+		<writeHost host="hostM1" url="192.168.85.14:3306" user="root"
+				   password="123456">
+			<!-- can have multi read hosts -->
+			<readHost host="hostS2" url="192.168.85.15:3306" user="root" password="123456" />
+		</writeHost>
+		<!-- <writeHost host="hostS1" url="localhost:3316" user="root"
+				   password="123456" /> -->
+		<!-- <writeHost host="hostM2" url="localhost:3316" user="root" password="123456"/> -->
+	</dataHost>
+</mycat:schema>

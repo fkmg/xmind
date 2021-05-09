@@ -1,0 +1,6 @@
+最大客户端连接数由worker_processes和worker_connections决定，即Max_client=worker_processes*worker_connections。
+在作为反向代理时，max_clients变为：max_clients = worker_processes * worker_connections/4。
+
+********重点
+进程的最大连接数受Linux系统进程的最大打开文件数限制，
+在执行操作系统命令“ulimit -n 65536”后worker_connections的设置才能生效

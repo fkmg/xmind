@@ -1,0 +1,88 @@
+Jdk1.8新特性主要有:
+	1、Lambda表达式
+	2、函数式接口
+	3、方法引用和构造器调用
+	4、Stream API
+	5、接口中的默认方法和静态方法
+	6、新时间日期API
+	
+一、函数式接口
+1、什么是函数式接口
+	1.1、只定义了一个抽象方法的接口
+	1.2、并且还提供了注解：@FunctionalInterface
+2、常见的函数式接口
+	2.1 Consumer 《T》：消费型接口，有参无返回值
+	2.2 Supplier 《T》：供给型接口，无参有返回值
+	2.3 Function 《T,R》：:函数式接口，有参有返回值
+	2.4 Predicate《T》： 断言型接口，有参有返回值，返回值是boolean类型
+
+
+二、方法的引用
+	<a> 方法的引用
+	1. 对象：：实例方法名
+	2. 类：：静态方法名
+	3. 类：：实例方法名 （lambda参数列表中第一个参数是实例方法的调用 者，第二个参数是实例方法的参数时可用）
+	<b>构造器引用
+	
+	<c>数组引用
+	格式：Type[]::new
+	
+三、Stream API
+	Stream API的使用方法
+		1、创建stream
+		2、中间操作
+		3、终止操作
+		
+		1.怎么创建流
+			1，校验通过Collection 系列集合提供的stream()或者paralleStream()
+			2.通过Arrays的静态方法stream()获取数组流
+			3.通过Stream类中的静态方法of
+			Stream<String> stream3 = Stream.of("aa","bb","cc");
+			4.创建无限流Stream<Integer> stream4 = Stream.iterate(0,(x) -> x+2);
+			5、Stream.generate(() ->Math.random());
+			
+		2.Stream的中间操作:
+			1.过滤
+			2.排序
+			3.去重
+			4.筛选
+		
+		3.Stream的终止操作
+			allMatch-检查是否匹配所有元素
+			anyMatch-检查是否至少匹配一个元素	
+			noneMatch-检查是否没有匹配所有元素
+			findFirst-返回第一个元素	
+			findAny-返回当前流中的任意元素
+			count-返回流中元素的总个数
+			max-返回流中最大值
+			min-返回流中最小值
+			
+		4.功能比较强大的两个终止操作 reduce和collect
+			1.reduce操作 可以将流中元素反复结合起来，得到一个值
+			2.collect操作 Collect-将流转换为其他形式，接收一个Collection接口的实现，用于给Stream中元素做汇总的方法
+			
+四:并行流和串行流
+	1、什么是并行流
+		1.并行流就是把内容切割成多个数据块，并且使用多个线程分别处理每个数据块的内容。
+		2.Stream api中声明可以通过parallel()与sequential()方法在并行流和串行流之间进行切换。
+		3.jdk1.8并行流使用的是fork/join框架进行并行操作
+五:ForkJoin框架
+	1、将一个大任务，进行拆分(fork)成若干个小任务（拆到不可再拆时），再将一个个的小任务运算的结果进行 join 汇总。
+	
+	
+	
+六:Optional容器
+	1、Optional.of(T t); // 创建一个Optional实例
+	2、Optional.empty(); // 创建一个空的Optional实例
+	3、Optional.ofNullable(T t); // 若T不为null，创建一个Optional实例，否则创建一个空实例
+	4、isPresent();    // 判断是够包含值
+	5、orElse(T t);   //如果调用对象包含值，返回该值，否则返回T
+	6、orElseGet(Supplier s);  // 如果调用对象包含值，返回该值，否则返回s中获取的值
+	7、map(Function f): // 如果有值对其处理，并返回处理后的Optional，否则返回Optional.empty();
+	8、flatMap(Function mapper);// 与map类似。返回值是Optional
+	
+七:新的日期API LocalDate | LocalTime | LocalDateTime
+新的日期API都是不可变的，更使用于多线程的使用环境中
+
+
+八:java8 stream接口 终端操作 collect操作

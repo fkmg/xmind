@@ -1,0 +1,23 @@
+public static void main(String[] args)  throws Exception{
+    Properties props=new Properties();
+    props.put("mail.smtp.host","smtp.163.com");
+    props.put("mail.smtp.auth","true");
+    Session session=Session.getInstance(props);
+    //构造信息体
+    MimeMessage message =new MimeMessage(session);
+    //发件地址
+    Address address = new InternetAddress("geekfange@163.com");
+    message.setFrom(address);
+    //收件地址
+    Address toAddress = new InternetAddress("mangck@163.com");
+    message.setRecipient(MimeMessage.RecipientType.TO, toAddress);
+    //主题
+    message.setSubject("Hello world");
+    //正文
+    message.setText("Hello world");
+    message.saveChanges();
+    Transport transport = session.getTransport("smtp");
+    transport.connect("smtp.163.com", "geekfange@163.com", "密码"); //发送
+    transport.sendMessage(message, message.getAllRecipients());
+    transport.close();
+}

@@ -1,0 +1,17 @@
+整合拦截器和时间转换器
+
+	 @Configuration
+	 public class MyConfig extends WebMvcConfigurerAdapter{
+
+		@Override
+		addInterceptors()...
+
+		@Override
+		addFormatters()...
+	 }
+
+拦截器
+需要实现HandlerInterceptor接口
+
+日期转换器
+实现Converter<String, Date>接口

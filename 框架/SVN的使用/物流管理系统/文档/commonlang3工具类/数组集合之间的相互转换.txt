@@ -1,0 +1,12 @@
+1、list集合转换成数组
+List<String> list = new ArrayList<>();
+String [] a = new String[4];
+list.toArray(a);
+
+2、将数组a转换成list集合
+Arrays.asList(T...);
+a也可以是多个字符串
+
+3、将set集合转换成数组
+
+a=set.toArray();

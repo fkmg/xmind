@@ -1,0 +1,9 @@
+搭建伪分布式：
+需要三个zookeeper节点
+需要四个tomcat节点。
+需要四个solr节点。
+4安装步骤
+4.1环境准备
+apache-tomcat-7.0.86.zip
+zookeeper-3.4.6.tar.gz
+solr-4.10.3.rar

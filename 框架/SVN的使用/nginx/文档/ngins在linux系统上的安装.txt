@@ -1,0 +1,20 @@
+nginx的安装
+	1、安装c语言环境
+		yum install gcc-c++ 
+		yum install -y pcre pcre-devel
+		yum install -y zlib zlib-devel
+		yum install -y openssl openssl-devel
+	2、安装nginx
+		1、上传nginx安装包：/usr/upload
+		2、解压安装包：tar zxvf nginx-1.8.1.tar.gz
+		3、编译
+			cd nginx-1.8.1
+			./configure -prefix=/usr/java/nginx
+		4、安装
+			make
+			make install
+
+四、nginx的启动和关闭
+	启动：./nginx
+	关闭：./nginx -s stop
+	重新加载配置文件：./nginx -s reload

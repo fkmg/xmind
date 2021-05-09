@@ -1,0 +1,11 @@
+1、SpringBoot 使开发者能快速的开发出Spring的应用
+2、Spring Boot 并不是对Spring功能的增加，而是提供了一种快速使用Spring的方式。
+
+
+3、注意:
+springboot启动器需注意的地方有
+
+启动器存放的位置：
+   controller同一个包下
+
+   controller的上一层目录

@@ -1,0 +1,42 @@
+1、怎么创建cookie
+Cookie cookie = new Cookie("key",value);
+2、常用的操作
+cookie.setMaxAge();//默认单位秒
+
+cookie.setPath("/");//设置路径
+
+response.addCookie(cookie);//添加cookie
+
+3、我们传输的 cookie 的值包含了中文字符的话，就需要给字符进行编码
+
+
+request.setCharacterEncoding("UTF-8");
+String cookieValue = URLEncoder.encode("中文 Cookie 值", "UTF-8");
+Cookie cookie_token = new Cookie("myCookie", cookieValue);
+cookie_token.setMaxAge(60 * 60 * 60);
+cookie_token.setPath("/");
+response.addCookie(cookie_token);
+
+4、读取cookie的做法
+
+
+Cookie cookies[] = request.getCookies();
+System.out.println("Cookie长度:" + cookies.length);  
+if (cookies != null) {
+    for (int i = 0; i < cookies.length; i++) {
+        if (cookies[i].getName().equals("nick")) {
+            System.out.println("For 内部Cookie"
+                    + URLDecoder.decode(cookies[i].getValue(),
+                    "UTF-8"));
+        }
+    }
+}
+
+5、删除 Cookie 做法如下
+
+Cookie cookie_token = new Cookie("token",null);
+cookie_token.setMaxAge(0);
+cookie_token.setPath("/");
+response.addCookie(cookie_token);
+
+

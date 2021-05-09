@@ -1,0 +1,121 @@
+一、Mybatis与Hibernate的区别
+ 1、hibernate是完全的orm框架，而mybaits是一个不完全的orm框架。
+ 2、Mybatis让程序员只关注sql本身，不用关心表之间的联系和statement的创建。
+
+二、执行流程
+
+1、 配置文件
+	1、全局配置文件(配置数据源，事务等运行时信息)
+	2、映射文件(执行statement的相关信息包括sql语句、输入参数、输出结果)
+	
+2、SqlSessionFactory(会话工厂)作用:生产会话
+
+3、SqlSession(会话)
+	1、面向程序员的接口，程序员通过该接口可以对数据库进行增删改查方法，该接口有一个默认的实现
+4、executor执行器(基本执行器，缓存执行器)
+
+三、Mybatis的使用
+如对数据库中的User表做相关的操作
+1、所需的依赖: mybatis、log4j、MySQL、连接池
+
+2、配置文件: 
+	1、log4j、数据源、
+	2、mybatis-config.xml(*********)
+		1、加载属性文件<properties resource="jdbc.properties">
+		2、使用jdbc管理事务
+			<property name="driver" value="${jdbc.driverClassName}"/>
+			<property name="url" value="${jdbc.url}"/>
+			<property name="username" value="${jdbc.username}"/>
+			<property name="password" value="${jdbc.password}"/>
+			
+		3、加载映射文件
+			<mappers>
+
+			</mappers>
+	3、User.xml (*****)
+		
+	
+	4、补充:${}、#{}的区别
+	
+		1、${}表示拼接sql串可将参数无缝的拼接到sql中
+		2、${}容易引起sql注入
+		3、${}当参数为基本数据类型时只能用${value}
+		
+		4、#{}但参数为基本数据类型和只有一个参数时#{参数任意}
+	
+3、接口实现
+	
+	1、创建流(读取配置文件(用流)-->mybatis-config.xml)inputStream
+	2、SqlSessionFactoryBuilder-->SqlSessionFactoryBuilder().build(inputStream)
+	3、创建Session-->SqlSessionFactory.openSession();
+	4、查询对象-->sqlSession.selectOne("user.getUserById",id);(selecList为查询集合)
+	
+	
+4、Mybatis开发dao的方式
+	1、为什么要使用dao的开发模式
+		1、之前的代码中有大量的重复的模板代码
+		2、存在硬编码
+
+	2、Mapper代理的开发方式
+		1、Mapper代理开发的规范
+			1、namespace的命名需和mapper文件的完全限定名一致
+		
+			2、mapper中方法的名字和id相同
+			
+			3、方法的参数与返回值类型需和映射文件中的属性保持一致
+
+	
+	3、dao中的开发模式
+		1、创建流(读取配置文件(用流)-->mybatis-config.xml)inputStream
+		2、SqlSessionFactoryBuilder-->SqlSessionFactoryBuilder().build(inputStream)
+		3、创建Session-->SqlSessionFactory.openSession();
+		4、获取mapper--> sqlSession.getMapper(UserMapper.class);
+		5、用mapper操作用户的对象
+
+	
+	4、补充:********全局配置文件顺序*********
+
+		mybatis-config.xml的配置内容和顺序如下（顺序不能乱）：
+		properties（属性）用于配置属性信息
+		settings（全局参数设置）用于配置MyBatis的运行时方式
+		typeAliases（类型别名）配置类型别名，可以在xml中用别名取代全限定名
+		typeHandlers（类型处理器）配置类型处理器
+		objectFactory（对象工厂）
+		plugins（插件）配置拦截器，用于拦截sql语句的执行
+		environments（环境信息集合）
+		environment（单个环境信息）配置数据源信息、连接池、事务属性等
+		transactionManager（事务）
+		dataSource（数据源）
+		mappers（映射器）配置SQL映射文件
+		
+5、------------------Mybatis配置中常用的标签--------------------
+	
+	常用的标签
+		if、where、sql片段、foreach标签
+	1、if标签<if test="">***切记<不能用<表示
+	
+	2、sql片段id：唯一标识 基于单表来定义sql片段，这样sql片段重用性才高，在sql片段中不要包括where
+	关键字常与include标签一通使用
+	3、foreach标签
+		collection:制定输入对象中集合属性
+		item: 每次遍历生成的对象
+		open：开始遍历时拼接的串
+		close：结束时开始拼接的串
+		separator:分割符:遍历的两个对象中需要拼接的串
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	

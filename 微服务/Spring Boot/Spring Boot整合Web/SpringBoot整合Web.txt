@@ -1,0 +1,80 @@
+++++++++++++++++++++++++++++++++++++++整合Servlet++++++++++++++++++++++++++++++++++++++++++
+一、Spring Boot 整合Servlet
+ 1、通过注解扫描
+	1、1 继承父类 HttpServlet 重写父类的方法
+	1、2 Servlet  注解 @WebServlet
+	1、3 App： @ServletComponentScan 与 @SpringBootApplication
+ 2、通过方法注册
+	1、1 继承父类 HttpServlet 重写父类的方法
+	1、2 Servlet  注解 不需要
+	1、3 App：  @SpringBootApplication 
+		    @Bean 编写返回值为ServletRegistrationBean 类型的get方法
+
+++++++++++++++++++++++++++++++++++++++整合Filter++++++++++++++++++++++++++++++++++++++++++
+一、Spring Boot 整合Filter
+ 1、通过注解扫描
+	1、1 实现 Filter接口
+	1、2 Servlet  注解 @WebFilter
+	1、3 App： @ServletComponentScan 与 @SpringBootApplication
+ 2、通过方法注册
+	1、1 实现 Filter接口
+	1、2 Servlet  注解 不需要
+	1、3 App：  @SpringBootApplication 
+		    @Bean 编写返回值为FilterRegistrationBean 类型的get方法
+++++++++++++++++++++++++++++++++++++++整合Listener++++++++++++++++++++++++++++++++++++++++++
+一、Spring Boot 整合Listener
+ 1、通过注解扫描
+	1、1 实现 ServletContectListener,HttpSessionListener接口
+	//ServletContectListener监听tomcat的启动
+	1、2 Servlet  注解 @WebFilter
+	1、3 App： @ServletComponentScan 与 @SpringBootApplication
+ 2、通过方法注册
+	1、1 实现 ServletContectListener接口
+	1、2 Servlet  注解 不需要
+	1、3 App：  @SpringBootApplication 
+		    @Bean 编写返回值为ServletListenerRegistrationBean类型的get方法
+
+
+
+++++++++++++++++++++++++++++++++++++++访问静态资源++++++++++++++++++++++++++++++++++++++++++
+访问静态资源的方式有两种
+方式一、从resources/static访问
+
+*******注意:访问的目录必须是static
+
+方式二、从webapp访问
+
+
+++++++++++++++++++++++++++++++++++++++文件上传++++++++++++++++++++++++++++++++++++++++++
+
+1、在application.yml文件配置相关的属性
+设置单个上传文件的大小
+spring.http.multipart.maxFileSize=200MB
+设置一次请求上传文件的总容量
+spring.http.multipart.maxRequestSize=200MB
+
+2、编写servlet
+
+
+*******重要总结
+1、过滤器项目启动时初始化，servelt当第一次请求来临时初始化一次。
+2、ServletContextListener当项目启动时初始化一次。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+1> Using index：使用覆盖索引
+
+2>Using where：使用 where 语句来处理结果，查询的列未被索引覆盖
+
+3>Using index condition：查询的列不完全被索引覆盖，where条件中是一个前导列的范围；
+
+4>Using temporary：mysql需要创建一张临时表来处理查询。出现这种情况一般是要进行优化的，首先是想到用索引来优化.
+
+5>Using filesort：将用外部排序而不是索引排序，数据较小时从内存排序，否则需要在磁盘完成排序。这种情况下一般也是要考虑使用索引来优化的。
+
+6>Select tables optimized away：使用某些聚合函数（比如 max、min）来访问存在索引的某个字段是

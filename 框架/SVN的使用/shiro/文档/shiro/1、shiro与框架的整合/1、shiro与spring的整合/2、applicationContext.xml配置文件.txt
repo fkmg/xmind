@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 扫描的包路径 去掉mvc的注解 -->
+    <context:component-scan base-package="com.bjsxt"/>
+    <!--加载配置文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!--让spring初始化一个shiro的安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">
+        <!--注入我们自定的realm-->
+        <property name="realm" ref="shiroRealm"/>
+    </bean>
+    <!--自定的relam 从数据库访问用户的认证和授权信息-->
+    <bean id="shiroRealm" class="com.bjsxt.shiro.realm.ShiroRelam">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+    <!--初始化一个凭证管理器，设置密码的加密算法和规则-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="1"/>
+    </bean>
+ </beans>

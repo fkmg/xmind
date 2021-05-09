@@ -1,0 +1,203 @@
+package com.bjsxt.realm.shiro;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.Permission;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import java.sql.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Created by   2017/3/28.
+ */
+public class ShiroRelam extends AuthorizingRealm {
+    /**
+     * 认证
+     * @param token
+     * @return
+     * @throws AuthenticationException
+     */
+    @Override
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        //用户登录的时候输入的用户名
+        String username = (String) token.getPrincipal();//获取到用户名
+        //访问数据库，通过用户名查找到对应的用户信息-->可以获取到用户的凭证信息
+        String[] userInfo = this.getUserInfoByAccount(username);
+        //如果在数据库查询不到改用户，return null
+        //如果找到对应用户，取出用户的密码，让shiro进行凭证的匹配
+        String account = userInfo[0];//应该是从数据库获取到的
+        String password = userInfo[1];
+        String salt = userInfo[2];
+        if(account == null){
+            return null;
+        }
+        //待认证的信息
+        SimpleAuthenticationInfo simpleAuthenticationInfo =
+                new SimpleAuthenticationInfo(username,password, ByteSource.Util.bytes(salt),this.getName());
+        return simpleAuthenticationInfo;
+    }
+
+    /**
+     * 授权
+     * @param principals
+     * @return
+     */
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+
+        // 获取身份信息 通过用户名查询到对应的用户的角色和权限
+        //获取到认证成功以后的用户帐号
+        String account = (String) principals.getPrimaryPrincipal();
+        // 根据身份信息从数据库中查询权限数据
+        // 权限信息的对象
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        //将角色信息设置到AuthorizationInfo
+        Set<String> roles = this.getUserRolesByAccount(account);
+        //info.addRole("admin");
+        info.addRoles(roles);
+        //将权限信息封封装到AuthorizationInfo
+        Set<String> permissions = getUserPermissionsByAccount(account);
+        //info.addStringPermission("user:add");
+        info.addStringPermissions(permissions);
+        return info;
+    }
+
+    /**
+     * 通过账号获取用户的权限信息
+
+     * @param account
+     * @return
+     */
+    private Set<String> getUserPermissionsByAccount(String account) {
+        String sql =
+                "SELECT sr.resource_permission FROM sys_resource sr\n" +
+                        "  LEFT JOIN sys_role_resource srr ON sr.resource_id = srr.resource_id\n" +
+                        "  LEFT JOIN sys_user_role sru ON sru.role_id = srr.role_id\n" +
+                        "  LEFT JOIN sys_user su ON su.user_id = sru.user_id\n" +
+                        "WHERE su.account = ?";
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/shiro";
+            Connection conn = DriverManager.getConnection(url, "root", "123456");
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, account);
+            ResultSet rs = ps.executeQuery();
+            Set<String> set = new HashSet<>();
+            if (rs.next()) {
+                set.add(rs.getString(1));
+            }
+            return set;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 通过账号获取用户的角色信息
+     *
+     * @param account
+     * @return
+     */
+    private Set<String> getUserRolesByAccount(String account) {
+        String sql =
+                "SELECT sr.role_name FROM sys_role sr\n" +
+                        "  LEFT JOIN sys_user_role sur ON sur.role_id = sr.role_id\n" +
+                        "  LEFT JOIN sys_user su ON su.user_id = sur.user_id\n" +
+                        "WHERE su.account = ?";
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/shiro";
+            Connection conn = DriverManager.getConnection(url, "root", "123456");
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, account);
+            ResultSet rs = ps.executeQuery();
+            Set<String> set = new HashSet<>();
+            if (rs.next()) {
+                set.add(rs.getString(1));
+            }
+            return set;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 通过账号获取用户的认证信息
+     * @param account
+     * @return
+     */
+    private String[] getUserInfoByAccount(String account) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/shiro";
+            Connection conn = DriverManager.getConnection(url, "root", "123456");
+            String sql = "select account,password,salt from sys_user where account = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, account);
+            ResultSet rs = ps.executeQuery();
+
+            String[] array = new String[3];
+            if (rs.next()) {
+                array[0] = rs.getString("account");
+                array[1] = rs.getString("password");
+                array[2] = rs.getString("salt");
+            }
+            return array;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
+
+8.1.4测试
+package com.bjsxt.shiro;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.subject.Subject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+/**
+ * Created by  on 2017/3/28.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+public class ShiroRelamTest {
+    @Autowired
+    SecurityManager securityManager;
+    @Test
+    public void test(){
+//        1、使用SecurityUtils将securityManager设置到运行环境中
+        SecurityUtils.setSecurityManager(securityManager);
+//        2、使用SecurityUtils创建一个Subject实例，该实例认证要使用上边创建的securityManager进行
+        Subject subject = SecurityUtils.getSubject();
+//        3、创建token令牌，记录用户认证的身份和凭证即账号和密码
+        UsernamePasswordToken token = new UsernamePasswordToken("admin","admin");
+//        4、用户登录
+        subject.login(token);
+        System.out.println(subject.isAuthenticated());
+    }
+}

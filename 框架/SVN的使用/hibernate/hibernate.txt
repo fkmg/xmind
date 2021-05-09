@@ -1,0 +1,17 @@
+1、Hibernate将数据库的差异都屏蔽掉了。
+hibernate.xml.cfg
+(1、)驱动 url,username,password
+(2、)增加映射文件
+.hbm.xml
+
+2、当调用Transcation中的commit方法时，将map中的数据同步到数据库
+3、session中定义了map属性configuration负责管理数据库的配置信息,
+数据库的配置信息包含了Hibernate连接数据库的基本信息
+4、SessionFactory中也有缓存，一个应用只有一个此对象，为单例模式。
+  初始化 Configuration cfg = new Configuration();
+	(1)cfg.configure();//配置文件为默认的
+	(2)文件名若不为默认的，则需写入文件名的参数
+	factory = cfg.buildSessionFactory();
+
+	//获取session的方法
+	factory.openSession();

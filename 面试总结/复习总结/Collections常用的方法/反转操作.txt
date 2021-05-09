@@ -1,0 +1,19 @@
+static void reverse(List<?> list)   反转指定列表中元素的顺序。
+
+package 类集;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+public class test1{
+    public static void main(String args[]){
+        
+        List<String> all = new ArrayList<String>() ;    // 返回空的 List集合
+        Collections.addAll(all,"MLDN","LXH","mldnjava") ;
+        Collections.reverse(all) ;    // 内容反转
+        Iterator<String> iter = all.iterator() ;
+        while(iter.hasNext()){
+            System.out.print(iter.next() + "、") ;
+        }
+    }
+};

@@ -1,0 +1,5 @@
+Core：模块主要包含Spring框架最基本的核心工具类，Core是其他组件的基础核心。
+Beans：模块主要包含访问配置文件、创建/管理Bean以及IOC/DI相关的类。
+Context：继承了Beans的特性，主要为Spring提供大量的扩展，如国际化、事件机制、资源加载等待。ApplicationContext接口是Context模块的
+关键。
+SpEL：模块提供了一个强大的语言表达式。

@@ -1,0 +1,63 @@
+一、访问map中的key
+${key}
+
+二、访问pojo中的属性
+${key.property}
+
+三、取集合中的数据
+
+1、取值
+
+//其中studentList是后台传至这里的模板数据 stu为别名
+<#list studentList as stu>
+	${stu.id}/${stu.name}
+</#list>
+
+2、去循环的下标
+
+<#list studentList as stu>
+	${stu_index}
+</#list>
+
+
+四、判断
+<#if stu_index%2==0>
+<#else>
+</#if>
+
+五、日期类型格式化
+
+直接取值:${date}(date是属性名)如果传来的是一个Date型数据会报错
+
+${date?date} 2016-9-13
+${date?time}  17:53:55
+${date?datetime}  17:53:55
+
+六、Null值的处理
+如果直接取一个不存在的值(值为空null)时会报异常
+${mm}
+
+处理: ${mm!”默认值”}或者${mm! }代表空字符串
+
+七 include标签
+
+<#include “模板名称”>
+(相当于jstl中的包含)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

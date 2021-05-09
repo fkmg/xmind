@@ -1,0 +1,5 @@
+<set name="employees" cascade="save-update" inverse="true">
+
+作用: 当对一个对象经行操作的时候，对和它关联的对象执行相同的操作
+默认为none ，表示不级联
+可以设置的值为:all,delete,save-update,none等

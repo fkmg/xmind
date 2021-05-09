@@ -1,0 +1,15 @@
+DELIMITER //
+CREATE PROCEDURE testIf()
+BEGIN
+	DECLARE num INT DEFAULT 10;
+	SET num = 5;
+	IF num < 3 THEN
+		SET num = 10;
+	ELSE
+		SET num = 50;
+	END IF;
+	SELECT num;
+END //
+DELIMITER;
+
+CALL testIf

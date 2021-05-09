@@ -1,0 +1,13 @@
+1、新增用户名与密码
+rabbitmqctl  add_user  student  student
+2、给用户名与密码授权
+rabbitmqctl  set_user_tags  student administrator 
+3、重启服务
+service rabbitmq-server restart
+
+
+service rabbitmq-server start # 启动服务
+
+service rabbitmq-server stop # 停止服务
+
+service rabbitmq-server restart # 重启服务

@@ -1,0 +1,97 @@
+合并(A,1)单元格到(o,4) 即四行，15列合并成一个，只合并合并行和只合并列
+ 	sheet.addMergedRegion(new CellRangeAddress(0,3,(short)0,(short)14));
+
+
+
+样式
+style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 垂直      
+            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 水平   
+
+
+
+
+(2)合并单元格
+1、HSSFSheet sheet = workbook.createSheet("Test");//创建工作表(Sheet) 
+2、HSSFRow row = sheet.createRow(0);
+3、合并列
+4、cell.setCellValue("合并列");
+5、CellRangeAddress region=new CellRangeAddress(0, 0, 0, 5);
+6、sheet.addMergedRegion(region); 
+
+//合并行
+cell=row.createCell(6);
+cell.setCellValue("合并行");
+region=new CellRangeAddress(0, 5, 6, 6);
+sheet.addMergedRegion(region);
+
+
+ CellRangeAddress对象其实就是表示一个区域，其构造方法如下：CellRangeAddress(firstRow, lastRow, firstCol, lastCol)，参数的说明：
+
+firstRow 区域中第一个单元格的行号
+lastRow 区域中最后一个单元格的行号
+firstCol 区域中第一个单元格的列号
+lastCol 区域中最后一个单元格的列号
+
+
+ 提示： 即使你没有用CreateRow和CreateCell创建过行或单元格，也完全可以直接创建区域然后把这一区域合并，Excel的区域合并信息是单独存储的，
+和RowRecord、ColumnInfoRecord不存在直接关系。
+
+单元格的对齐
+1、水平居中
+style.setAlignment(HSSFCellStyle.ALING_CENTER);//水平居中
+2、style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);//垂直居中
+3、style.setWrapText(true);//自动换行
+4、style.setIndention((short)5);//缩进
+style.setRotation((short)60);文本旋转，这里的取值-90~90
+
+ 水平对齐相关参数
+
+如果是左侧对齐就是 HSSFCellStyle.ALIGN_FILL;
+如果是居中对齐就是 HSSFCellStyle.ALIGN_CENTER;
+如果是右侧对齐就是 HSSFCellStyle.ALIGN_RIGHT;
+如果是跨列举中就是 HSSFCellStyle.ALIGN_CENTER_SELECTION;
+如果是两端对齐就是 HSSFCellStyle.ALIGN_JUSTIFY;
+如果是填充就是 HSSFCellStyle.ALIGN_FILL;
+     垂直对齐相关参数
+
+如果是靠上就是 HSSFCellStyle.VERTICAL_TOP;
+如果是居中就是 HSSFCellStyle.VERTICAL_CENTER;
+如果是靠下就是 HSSFCellStyle.VERTICAL_BOTTOM;
+如果是两端对齐就是 HSSFCellStyle.VERTICAL_JUSTIFY;
+
+
+设置边框
+
+HSSFCell cell=row.createCell(1);
+cell.setCellValue("设置边框");
+HSSFCellStyle style=workbook.createCellStyle();
+style.setBorderTop(HSSFCellStyle.BORDER_DOTTED);//上边框
+style.setBorderBottom(HSSFCellStyle.BORDER_THICK);//下边框
+style.setBorderLeft(HSSFCellStyle.BORDER_DOUBLE);//左边框
+style.setBorderRight(HSSFCellStyle.BORDER_SLANTED_DASH_DOT);//右边框
+style.setTopBorderColor(HSSFColor.RED.index);//上边框颜色
+style.setBottomBorderColor(HSSFColor.BLUE.index);//下边框颜色
+style.setLeftBorderColor(HSSFColor.GREEN.index);//左边框颜色
+style.setRightBorderColor(HSSFColor.PINK.index);//右边框颜色
+cell.setCellStyle(style);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

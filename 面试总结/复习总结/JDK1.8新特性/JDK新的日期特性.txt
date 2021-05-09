@@ -1,0 +1,114 @@
+	@Test
+    public void test(){
+        // 从默认时区的系统时钟获取当前的日期时间。不用考虑时区差
+        LocalDateTime date = LocalDateTime.now();
+        //2018-07-15T14:22:39.759
+        System.out.println(date);
+
+        System.out.println(date.getYear());
+        System.out.println(date.getMonthValue());
+        System.out.println(date.getDayOfMonth());
+        System.out.println(date.getHour());
+        System.out.println(date.getMinute());
+        System.out.println(date.getSecond());
+        System.out.println(date.getNano());
+
+        // 手动创建一个LocalDateTime实例
+        LocalDateTime date2 = LocalDateTime.of(2017, 12, 17, 9, 31, 31, 31);
+        System.out.println(date2);
+        // 进行加操作，得到新的日期实例
+        LocalDateTime date3 = date2.plusDays(12);
+        System.out.println(date3);
+        // 进行减操作，得到新的日期实例
+        LocalDateTime date4 = date3.minusYears(2);
+        System.out.println(date4);
+    }
+	
+	
+	@Test
+    public void test2(){
+        // 时间戳  1970年1月1日00：00：00 到某一个时间点的毫秒值
+        // 默认获取UTC时区
+        Instant ins = Instant.now();
+        System.out.println(ins);
+
+        System.out.println(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        System.out.println(System.currentTimeMillis());
+
+        System.out.println(Instant.now().toEpochMilli());
+        System.out.println(Instant.now().atOffset(ZoneOffset.ofHours(8)).toInstant().toEpochMilli());
+    }
+	@Test
+    public void test3(){
+        // Duration:计算两个时间之间的间隔
+        // Period：计算两个日期之间的间隔
+
+        Instant ins1 = Instant.now();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Instant ins2 = Instant.now();
+        Duration dura = Duration.between(ins1, ins2);
+        System.out.println(dura);
+        System.out.println(dura.toMillis());
+
+        System.out.println("======================");
+        LocalTime localTime = LocalTime.now();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LocalTime localTime2 = LocalTime.now();
+        Duration du2 = Duration.between(localTime, localTime2);
+        System.out.println(du2);
+        System.out.println(du2.toMillis());
+    }
+
+
+	public static void localDateTest() {
+
+        //获取当前日期,只含年月日 固定格式 yyyy-MM-dd    2018-05-04
+        LocalDate today = LocalDate.now();
+
+        // 根据年月日取日期，5月就是5，
+        LocalDate oldDate = LocalDate.of(2018, 5, 1);
+
+        // 根据字符串取：默认格式yyyy-MM-dd，02不能写成2
+        LocalDate yesteday = LocalDate.parse("2018-05-03");
+
+        // 如果不是闰年 传入29号也会报错
+        LocalDate.parse("2018-02-29");
+    }
+	
+	
+	  /**
+     * 日期转换常用,第一天或者最后一天...
+     */
+    public static void localDateTransferTest(){
+        //2018-05-04
+        LocalDate today = LocalDate.now();
+        // 取本月第1天： 2018-05-01
+        LocalDate firstDayOfThisMonth = today.with(TemporalAdjusters.firstDayOfMonth());
+        // 取本月第2天：2018-05-02
+        LocalDate secondDayOfThisMonth = today.withDayOfMonth(2);
+        // 取本月最后一天，再也不用计算是28，29，30还是31： 2018-05-31
+        LocalDate lastDayOfThisMonth = today.with(TemporalAdjusters.lastDayOfMonth());
+        // 取下一天：2018-06-01
+        LocalDate firstDayOf2015 = lastDayOfThisMonth.plusDays(1);
+        // 取2018年10月第一个周三 so easy?：  2018-10-03
+        LocalDate thirdMondayOf2018 = LocalDate.parse("2018-10-01").with(TemporalAdjusters.firstInMonth(DayOfWeek.WEDNESDAY));
+    }
+	public static void localTimeTest(){
+        //16:25:46.448(纳秒值)
+        LocalTime todayTimeWithMillisTime = LocalTime.now();
+        //16:28:48 不带纳秒值
+        LocalTime todayTimeWithNoMillisTime = LocalTime.now().withNano(0);
+        LocalTime time1 = LocalTime.parse("23:59:59");
+    }
+————————————————
+版权声明：本文为CSDN博主「qq_29411737」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_29411737/article/details/80835658

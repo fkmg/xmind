@@ -1,0 +1,71 @@
+一、对象的创建大概需要经过以下几步:
+1、检查对应类是否已经被加载，解析和初始化
+2、类加载后，为新生对象分配内存
+3、将分配到的内存空间初始为0
+4、对对象进行关键信息的设置，比如对象的哈希码等
+5、然后执行 init 方法初始化对象
+
+2、线程池的处理流程
+public ThreadPoolExecutor(int corePoolSize,    //核心线程的数量
+                          int maximumPoolSize,    //最大线程数量
+                          long keepAliveTime,    //超出核心线程数量以外的线程空余存活时间
+                          TimeUnit unit,    //存活时间的单位
+                          BlockingQueue<Runnable> workQueue,    //保存待执行任务的队列
+                          ThreadFactory threadFactory,    //创建新线程使用的工厂
+                          RejectedExecutionHandler handler // 当任务无法执行时的处理器
+                          )
+						
+corePoolSize：核心线程池数量 
+在线程数少于核心数量时，有新任务进来就新建一个线程，即使有的线程没事干
+等超出核心数量后，就不会新建线程了，空闲的线程就得去任务队列里取任务执行了
+maximumPoolSize：最大线程数量 
+包括核心线程池数量 + 核心以外的数量
+如果任务队列满了，并且池中线程数小于最大线程数，会再创建新的线程执行任务
+keepAliveTime：核心池以外的线程存活时间，即没有任务的外包的存活时间 
+如果给线程池设置 allowCoreThreadTimeOut(true)，则核心线程在空闲时头上也会响起死亡的倒计时
+如果任务是多而容易执行的，可以调大这个参数，那样线程就可以在存活的时间里有更大可能接受新任务
+workQueue：保存待执行任务的阻塞队列 
+不同的任务类型有不同的选择，下一小节介绍
+threadFactory：每个线程创建的地方 
+可以给线程起个好听的名字，设置个优先级啥的
+handler：饱和策略，大家都很忙，咋办呢，有四种策略 
+CallerRunsPolicy：只要线程池没关闭，就直接用调用者所在线程来运行任务
+AbortPolicy：直接抛出 RejectedExecutionException 异常
+DiscardPolicy：悄悄把任务放生，不做了
+DiscardOldestPolicy：把队列里待最久的那个任务扔了，然后再调用 execute() 试试看能行不
+我们也可以实现自己的 RejectedExecutionHandler 接口自定义策略，比如如记录日志什么的
+
+
+两种提交任务的方法
+
+execute() 的参数是一个 Runnable，也没有返回值。因此提交后无法判断该任务是否被线程池执行成功						
+
+submit() 有三种重载，参数可以是 Callable 也可以是 Runnable。
+
+同时它会返回一个 Funture 对象，通过它我们可以判断任务是否执行成功。
+
+获得执行结果调用 Future.get() 方法，这个方法会阻塞当前线程直到任务完成。
+
+提交一个 Callable 任务时，需要使用 FutureTask 包一层：
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+

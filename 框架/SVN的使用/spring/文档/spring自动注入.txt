@@ -1,0 +1,12 @@
+1、自动注入的方式
+  autowire="byName|byType|constructor"
+
+  byName:通过属性名称进行自动装配:会根据属性名称在spring容器查找与其相同名称的bean，然后进行注入
+   	要求:属性名称必须与spring容器中待注入的bean的id一致。
+
+  byType:通过属性的类型进行自动装配:会根据属性类型在spring容器查找与其相同类型的bean，然后进行注入
+   	要求:当前spring容器待注入的类型要唯一，否则将抛出NoUniqueBeanDefinitionException异常
+
+  constructor：通过构造方法进行自动装配:优先使用byName自动装配模式调用构造方法进行bean对象的构建.
+        如果byName自动装配模式无法匹配所有的构造参数,则根据byType自动装配模式调用构造方法进行bean对象的构建.
+	这时如果有多个同类型bean,会在构建bean对象时抛出异常

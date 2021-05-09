@@ -1,0 +1,17 @@
+一:基本的操作
+常看当前数据库的事务隔离级别: show variables like 'tx_isolation';
+
+设置事务隔离级别：set tx_isolation='REPEATABLE-READ';
+
+事务的隔离级别:  					脏读					不可重复读						幻读
+
+read uncommitted 读					√						√								√
+未提交
+
+read committed 读				    ×						√								√
+已提交
+
+repeatable read 可 					×						×								√
+重复读
+
+serializable 串行化				    ×						×								×

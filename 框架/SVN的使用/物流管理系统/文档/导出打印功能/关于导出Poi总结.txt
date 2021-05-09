@@ -1,0 +1,166 @@
+包名程说明:
+HSSF提供读写Microsoft Excel XLS格式档案的功能。
+
+XSSF提供读写Microsoft Excel OOXML XLSX格式档案的功能。
+
+HWPF提供读写Microsoft Word DOC格式档案的功能。
+
+HSLF提供读写Microsoft PowerPoint格式档案的功能。
+
+HDGF提供读Microsoft Visio格式档案的功能。
+
+HPBF提供读Microsoft Publisher格式档案的功能。
+
+HSMF提供读Microsoft Outlook格式档案的功能。
+
+
+
+PoI常用类说明
+
+类名 			说明
+
+HSSFWorkbook		Excel的文档对象
+
+HSSPSheet		Excel的表格
+HSSFRow			Excel的行
+HSSPFCell		Excel的单元格子
+HSSFFont                Excel字体
+ 
+
+HSSFDataFormat        格子单元的日期格式
+
+HSSFHeader             Excel文档Sheet的页眉
+
+HSSFFooter             Excel文档Sheet的页脚
+
+HSSFCellStyle          格子单元样式
+
+HSSFDateUtil           日期
+
+HSSFPrintSetup        打印
+
+HSSFErrorConstants   错误信息表
+
+
+(1)创建Workbook和Sheet
+
+public class Test00
+{
+ public static void main(String[] args) throws IOException
+ {
+     String filePath="d:\\users\\lizw\\桌面\\POI\\sample.xls";//文件路径
+     HSSFWorkbook workbook = new HSSFWorkbook();//创建Excel文件(Workbook)
+     HSSFSheet sheet = workbook.createSheet();//创建工作表(Sheet)
+     sheet = workbook.createSheet("Test");//创建工作表(Sheet)
+     FileOutputStream out = new FileOutputStream(filePath);
+     workbook.write(out);//保存Excel文件
+     out.close();//关闭文件流
+     System.out.println("OK!");
+ }
+}
+(2)创建单元格
+  1、HSSFSheet sheet = wb.createSheet("Test");//创建工作表(sheet)名字为Test
+  2、HSSFRow row = sheet.createRow(0);//创建行，从0开始
+  3、HSSFCell cell = row.createCell(0);//创建行的单元格，也是从0开始
+  4、cell.setCellValue("fk");//设置单元格的值
+  5、row.createCell(1).setCellValue(false);// 设置单元格内容,重载
+  6、row.createCell(2).setCellValue(new Date());// 设置单元格内容,重载
+  7、row.createCell(3).setCellValue(12.345);// 设置单元格内容,重载
+
+创建文档摘要的信息
+  1、wb.createInformationProperties();//创建文档 信息
+  2、DocumentSummaryInformation dsi = wb.getDocumentSummaryInformation();//摘要信息
+  3、dsi.setCategory("类别:Excel文件");
+  4、dsi.setManager("管理者:fk");//管理者
+  5、SummaryInformation si = wb.getSummaryInformation();//摘要信息
+  6、si.setSubject("主题:--")://主体
+  7、si.setTitle("标题:测试文档");//标题
+  8、si.setAuthor("作者:fk");//作者
+  9、si.setComments("备注:POI测试文档");//备注
+
+
+创建批注
+1、HSSFSheet sheet = wb.createSheet("test");//创建工作表(Sheet)
+1、HSSFPatriarch patr = sheet.createDrawingPatriarch();
+3、HSSFClientAnchor anchor = patr.createAnchor(0,0,0,0,5,1,8,3);//常见批注的位置
+4、HSSFComment comment = patr.createCellCommment(anchor);//创建批注
+5、comment.setString(new HSSFRichTextString("这是我的第一个批注段落!");//设置批注内容
+6、comment.setAuthor("fk");//创建批注的作者
+7、comment.setVisible(true);//设置批注默认显示
+8、HSSFCell cell = sheet.createRow(2).createCell(1); //创建行和单元格
+9、cell.setCellValue("测试");//给单元格设值
+10、cell.setCellComment(comment);//把批注赋值给单元格
+
+创建批注位置HSSFPatriarch.createAnchor(dx1, dy1, dx2, dy2, col1, row1, col2, row2)方法参数说明：
+
+(1)dx1 第一个单元格中x轴的偏移量
+(2)dx2 第一个单元格中y轴的偏移量
+(3)dx3 第二个单元格中x轴的偏移量
+(4)dx4 第二个单元格中y轴的偏移量
+(5)coll 第一个单元格的列号
+(6)row1 第一个单元各的行号
+(7)col2 第二个单元格的列号
+(8)row2 第二个单元格的行号
+
+<5>创建页眉和页脚
+
+1、HSSFSheet sheet = workbook.createSheet("test");//创建工作表(sheet)
+2、HSSFHeader header = sheet.getHeader();得到页眉
+3、header.setLeft("页眉左边");
+4、header.setRight("页眉右边");
+5、header.setCenter("页眉中间");
+
+6、HSSFFooter footer = sheet.getFooter();//得到页脚
+7、footer.setLeft("页脚左边");
+8、footer.setRight("页脚右边");
+9、footer.setCenter("页脚中间");
+
+
+ 也可以使用Office自带的标签定义，你可以通过HSSFHeader或HSSFFooter访问到它们，都是静态属性，列表如下：
+
+HSSFHeader.tab &A 表名
+HSSFHeader.file &F 文件名
+HSSFHeader.startBold &B 粗体开始
+HSSFHeader.endBold &B 粗体结束
+HSSFHeader.startUnderline &U 下划线开始
+HSSFHeader.endUnderline &U 下划线结束
+HSSFHeader.startDoubleUnderline &E 双下划线开始
+HSSFHeader.endDoubleUnderline &E 双下划线结束
+HSSFHeader.time &T 时间
+HSSFHeader.date &D 日期
+HSSFHeader.numPages &N 总页面数
+HSSFHeader.page &P 当前页号
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
