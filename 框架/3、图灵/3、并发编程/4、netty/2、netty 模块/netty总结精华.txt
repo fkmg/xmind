@@ -1,0 +1,9 @@
+1、boss线程组
+创建NioEventLoopGroup线程组
+
+work线程组
+NioEventLoopGroup
+
+其中:NioEventLoopGroup
+
+由多个children = new SingleThreadEventExecutor[nThreads];组成

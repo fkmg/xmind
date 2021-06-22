@@ -1,0 +1,86 @@
+<1、创建仓库
+
+1. 通过命令 git init 将本地文件变成可以管理的仓库
+
+
+<2、提交代码
+
+1.使用命令 git add 命令将新增的文件添加到暂存区里面去
+
+2、用命令 git commit 命令提交缓存区中的文件
+
+git commit -a -m ‘提交信息’
+
+我们知道-m参数是输入提交信息的，-a 参数就是可以把还没有执行add命令的修改一起提交。
+
+3、远程仓库
+
+第一次推送master分支时，加上了 –u参数，
+Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来
+
+git push origin master
+
+
+
+<3、查看文件的变化内容
+
+1. 使用 git diff 命令查看文件的变化
+
+2. 使用git log 命令查看文件提交日志
+
+
+
+<4、怎么回退文件
+
+git reset  --hard HEAD^ 那么如果要回退到上上个版本只需把HEAD^ 改成 HEAD^^ 以此类推。
+那如果要回退到前100个版本的话，使用上面的方法肯定不方便，
+我们可以使用下面的简便命令操作：git reset  --hard HEAD~100 即可
+
+
+怎么查看文件 版本号 git reflog
+
+
+2.回退文件
+git checkout --文件名 (注:-- 很重要，如果没有 -- 的话，那么命令变成创建分支了)
+
+1、修改的文件还没有放到暂存区
+2、修改的文件放到暂存区
+
+<5、创建分支
+git branch dev
+
+git merge命令用于合并指定分支到当前分支上
+
+<5、常用的查看命令
+1、查看当前分支
+git branch
+
+2、切换分支
+git checkout 命令加上 –b参数表示创建并切换
+
+查看分支：git branch
+
+   创建分支：git branch name
+
+   切换分支：git checkout name
+
+创建+切换分支：git checkout –b name
+
+合并某分支到当前分支：git merge name
+
+删除分支：git branch –d name
+
+ git branch -avv，它用来查看全部分支信息
+
+
+
+
+3、与用户相关
+git config user.name
+2. 查看当前登录邮箱：
+git config user.email
+
+3. 修改用户名和邮箱：
+git config --global user.name "fkmg"
+git config --global user.email "2794934017@qq.com"
+
