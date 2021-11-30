@@ -2,3 +2,11 @@
 2、reader注册注册类,@Autoware,@Required等后置处理器BeanDefintion并发至在BeanDifintionHolder中
 3、reader 调用register(annotatedClasses)方法将BeanDefintion放置在map中
 4、调用refresh()方法
+
+处理顺序
+PriorityOrdered
+Ordered
+其它
+
+先执行invokeBeanDefinitionRegistryPostProcessors
+再执行invokeBeanFactoryPostProcessors

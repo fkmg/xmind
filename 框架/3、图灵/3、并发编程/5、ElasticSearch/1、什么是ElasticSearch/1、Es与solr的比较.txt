@@ -1,0 +1,9 @@
+二者安装都很简单。
+1、Solr 利用 Zookeeper 进行分布式管理，而Elasticsearch 自身带有分布式协调
+管理功能。
+2、Solr 支持更多格式的数据，比如JSON、XML、CSV，而 Elasticsearch 仅支持
+json文件格式。
+3、Solr 在传统的搜索应用中表现好于 Elasticsearch，但在处理实时搜索应用时
+效率明显低于 Elasticsearch。
+4、Solr 是传统搜索应用的有力解决方案，但 Elasticsearch更适用于新兴的实时
+搜索应用。
